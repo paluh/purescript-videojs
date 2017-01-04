@@ -9,10 +9,13 @@
     "bower-webpack-plugin": "^0.1.9",
     "css-loader": "^0.25.0",
     "file-loader": "^0.9.0",
+    "node-sass": "^4.1.1",
     "pscid": "",
     "purescript": "^0.10.4",
     "purescript-psa": "^0.4.0",
     "purs-loader": "",
+    "sass-loader": "^4.1.1",
+    "scss-loader": "0.0.1",
     "style-loader": "^0.13.1",
     "webpack": "^1.12.14",
     "webpack-dev-server": "^1.14.1"

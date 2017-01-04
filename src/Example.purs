@@ -8,7 +8,7 @@ import DOM.Node.Types (ElementId(..))
 import Data.Either (Either(..))
 import Data.Maybe (Maybe(..))
 import Data.Nullable (toNullable)
-import Videojs (Preload(..), VIDEOJS, videojs)
+import Videojs (Preload(..), VIDEOJS, WatermarkPosition(..), videojs)
 
 run :: forall eff. Eff ( console :: CONSOLE, videojs :: VIDEOJS, dom :: DOM | eff ) Unit
 run = do
@@ -27,7 +27,12 @@ run = do
           , poster: toNullable Nothing
           }
         ]
-      , watermark: Nothing
+      , watermark:
+        Just
+          { url: "/static/khan.png"
+          , position: TopLeft
+          , fadeOut: Just 25
+          }
       }
   case result of
     Left err -> log err

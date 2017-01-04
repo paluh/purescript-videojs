@@ -3,7 +3,6 @@ module Videojs where
 import Prelude
 import DOM.HTML.Window as Window
 import Control.Monad.Eff (Eff)
-import Data.Newtype (class Newtype)
 import DOM (DOM)
 import DOM.HTML (window)
 import DOM.HTML.Types (htmlDocumentToDocument)
@@ -13,7 +12,6 @@ import DOM.Node.Node (appendChild)
 import DOM.Node.NonElementParentNode (getElementById)
 import DOM.Node.Types (elementToNode, documentToNonElementParentNode, Element, ElementId(ElementId), Document)
 import Data.Argonaut.Decode (decodeJson, class DecodeJson)
-import Data.Argonaut.Decode.Combinators ((.??), (.?))
 import Data.Either (Either(Left, Right))
 import Data.Function.Uncurried (Fn2, Fn4, runFn4, runFn2)
 import Data.Generic (class Generic, gShow)
@@ -23,11 +21,14 @@ import Data.Nullable (toNullable, toMaybe, Nullable)
 data Videojs
 foreign import data VIDEOJS :: !
 
-newtype AutoPlaybackMode = AutoPlaybackMode Boolean
-derive instance newtypeAutoPlaybackMode :: Newtype AutoPlaybackMode _
-
-newtype ControlBarVisibility = ControlBarVisibility Boolean
-derive instance controlBarVisibility :: Newtype ControlBarVisibility _
+-- `Auto` - player triggers preloading on browsers/devices which allow it
+-- `Metadata` - preload only metadata
+-- `None` - do not load anything
+data Preload = Auto | Metadata | None
+preloadToNative :: Preload -> String
+preloadToNative Auto = "auto"
+preloadToNative Metadata = "metadata"
+preloadToNative None = "none"
 
 data WatermarkPosition = TopLeft | TopRight | BottomRight | BottomLeft
 derive instance genericWatermarkPosition :: Generic WatermarkPosition
@@ -67,11 +68,12 @@ type PlaylistItem =
 type Playlist = Array PlaylistItem
 
 type Options =
-  { autoPlay :: AutoPlaybackMode
+  { autoPlay :: Boolean
   , parentId :: ParentId
-  , controlBarVisibility :: ControlBarVisibility
+  , controlBarVisibility :: Boolean
   -- , aspectRatio :: AspectRatio
   , playlist :: Playlist
+  , preload :: Preload
   , watermark :: Maybe Watermark
   -- , width :: Maybe Width
   }
@@ -83,8 +85,9 @@ type NativeWatermark =
   }
 
 type NativeOptions =
-  { autoplay :: AutoPlaybackMode
-  , controls :: ControlBarVisibility
+  { autoplay :: Boolean
+  , controls :: Boolean
+  , preload :: String
   , watermark :: Nullable NativeWatermark
   }
 
@@ -133,6 +136,7 @@ videojs options = do
         nativeOptions =
           { autoplay: options.autoPlay
           , controls: options.controlBarVisibility
+          , preload: preloadToNative options.preload
           , watermark: toNullable (toNativeWatermark <$> options.watermark)
           }
       appendChild (elementToNode videoElement) (elementToNode parentElement)

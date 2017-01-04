@@ -21,22 +21,19 @@ exports.videojsImpl = function(left, right, playerElementId, options) {
   return function() {
     var player, result;
     try {
-      options.muted = true;
-      console.log(options);
       player = videojs(playerElementId, options);
       player.qualityPickerPlugin();
       if(options.watermark) {
         player.watermark({
           'image': options.watermark.url,
           'fadeOut': options.watermark.fadeOut,
-          //'position': 'top-right'
+          'position': options.watermark.position
         });
       }
       result = right(player);
     } catch(err) {
       result = left("videojs error: \n" + err);
     }
-    console.log(result);
     return result;
   };
 };

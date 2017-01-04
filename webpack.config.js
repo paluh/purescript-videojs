@@ -48,10 +48,13 @@ var config
             , { test: /\.css$/
               , loader: "style-loader!css-loader"
               }
+            , { test: /\.scss$/
+              , loader: "style-loader!css-loader!sass-loader"
+              }
             ]
         }
     , resolve:
-        { modulesDirectories: [ 'node_modules', 'bower_components' ]
+        { modulesDirectories: [ 'node_modules', 'bower_components', 'css' ]
         , extensions: [ '', '.purs', '.js']
         }
     };
