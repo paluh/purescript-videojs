@@ -1,0 +1,33 @@
+{
+  "name": "purescript-videojs-hlsjs",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "output"
+  ],
+  "dependencies": {
+    "purescript-argonaut": "2.0.0",
+    "purescript-console": "2.0.0",
+    "purescript-dom": "3.1.0",
+    "purescript-functions": "2.0.0",
+    "purescript-generics": "3.1.0",
+    "purescript-foreign-generic": "2.0.0",
+    "purescript-newtype": "1.2.0",
+    "purescript-signal": "8.0.0",
+
+    "hls.js": "0.6.0",
+    "video.js": "5.13.2",
+    "videojs-playlist": "3.0.0",
+    "videojs-watermark": "https://github.com/dotsub/videojs-watermark.git#1.0.0",
+    "videojs-quality-picker": "https://github.com/paluh/videojs-quality-picker.git",
+    "videojs5-hlsjs-source-handler": "https://github.com/paluh/videojs5-hlsjs-source-handler.git"
+  },
+  "devDependencies": {
+    "purescript-psci-support": "^2.0.0"
+  },
+  "resolutions": {
+    "purescript-dom": "3.1.0",
+    "purescript-unsafe-coerce": "^2.0.0"
+  }
+}
