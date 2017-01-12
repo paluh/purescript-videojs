@@ -8,6 +8,7 @@ var min = ".min";
 var config
   = { entry: './app'
     , devtool: 'source-map'
+    , debug: true
     , devServer:
         { contentBase: '.'
         , port: 9878

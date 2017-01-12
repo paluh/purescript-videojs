@@ -29,12 +29,12 @@ run = do
         ]
       , watermark:
         Just
-          { url: "/static/khan.png"
+          { url: "./static/khan.png"
           , position: TopLeft
           , fadeOut: Just 25
           }
       }
   case result of
     Left err -> log err
-    Right v -> log "successs"
+    Right v -> log "very new"
 

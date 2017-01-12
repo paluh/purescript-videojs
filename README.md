@@ -1,6 +1,6 @@
 I. There are some compilation issues:
 
-  * change `bower_components/bower.json`:
+  * change `bower_components/video.js/bower.json`:
 
       "main": [
         "dist/alt/video.novtt.js",
