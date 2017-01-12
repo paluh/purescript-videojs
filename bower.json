@@ -11,7 +11,7 @@
     "hls.js": "0.6.16",
     "video.js": "5.13.2",
     "videojs-playlist": "3.0.0",
-    "videojs-watermark": "https://github.com/paluh/videojs-watermark.git#1.0.1",
+    "videojs-watermark": "https://github.com/paluh/videojs-watermark.git#master",
     "videojs-quality-picker": "https://github.com/paluh/videojs-quality-picker.git#master",
     "videojs5-hlsjs-source-handler": "https://github.com/paluh/videojs5-hlsjs-source-handler.git#master"
   },
