@@ -12,10 +12,12 @@ import DOM.Node.Node (appendChild)
 import DOM.Node.NonElementParentNode (getElementById)
 import DOM.Node.Types (elementToNode, documentToNonElementParentNode, Element, ElementId(ElementId), Document)
 import Data.Argonaut.Decode (decodeJson, class DecodeJson)
+import Data.Array (fromFoldable)
 import Data.Either (Either(Left, Right))
 import Data.Function.Uncurried (Fn2, Fn4, runFn4, runFn2)
 import Data.Generic (class Generic, gShow)
 import Data.Maybe (Maybe(Just, Nothing))
+import Data.NonEmpty (NonEmpty)
 import Data.Nullable (toNullable, toMaybe, Nullable)
 
 data Videojs
@@ -67,13 +69,21 @@ type PlaylistItem =
   }
 type Playlist = Array PlaylistItem
 
+data Tech = Flash | Html5
+
+techToNative :: Tech -> String
+techToNative Flash = "flash"
+techToNative Html5 = "html5"
+
 type Options =
   { autoPlay :: Boolean
   , parentId :: ParentId
   , controlBarVisibility :: Boolean
   -- , aspectRatio :: AspectRatio
+  , debug :: Boolean
   , playlist :: Playlist
   , preload :: Preload
+  , techOrder :: NonEmpty Array Tech
   , watermark :: Maybe Watermark
   -- , width :: Maybe Width
   }
@@ -84,10 +94,15 @@ type NativeWatermark =
   , position :: String
   }
 
+type HlsjsConfig =
+  { debug :: Boolean }
+
 type NativeOptions =
   { autoplay :: Boolean
   , controls :: Boolean
   , preload :: String
+  , html5 :: { hlsjsConfig :: HlsjsConfig }
+  , techOrder :: Array String
   , watermark :: Nullable NativeWatermark
   }
 
@@ -136,7 +151,9 @@ videojs options = do
         nativeOptions =
           { autoplay: options.autoPlay
           , controls: options.controlBarVisibility
+          , html5: { hlsjsConfig: { debug: options.debug } }
           , preload: preloadToNative options.preload
+          , techOrder: fromFoldable <<< map techToNative $ options.techOrder
           , watermark: toNullable (toNativeWatermark <$> options.watermark)
           }
       appendChild (elementToNode videoElement) (elementToNode parentElement)

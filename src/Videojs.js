@@ -22,6 +22,12 @@ exports.videojsImpl = function(left, right, playerElementId, options) {
     var player, result;
     try {
       player = videojs(playerElementId, options);
+      if(videojs.Flash !== undefined) {
+        videojs.Flash.prototype.play = function(){
+            this.el_.vjs_load();
+            this.el_.vjs_play();
+        };
+      }
       player.qualityPickerPlugin();
       if(options.watermark) {
         player.watermark({
