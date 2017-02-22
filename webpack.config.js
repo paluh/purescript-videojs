@@ -26,7 +26,7 @@ var config
         loaders: [{
            test: /\.purs$/,
               loader: "purs-loader",
-              query: { src: [ 'bower_components/purescript-*/src/**/*.purs', 'src/**/*.purs' ],
+              query: { src: [ 'bower_components/purescript-*/src/**/*.purs', 'src/**/*.purs', 'examples/**/*.purs'  ],
                        bundle: false,
                        output: './output',
                        psc: 'psa',

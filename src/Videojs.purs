@@ -12,7 +12,7 @@ import DOM.Node.Node (appendChild)
 import DOM.Node.NonElementParentNode (getElementById)
 import DOM.Node.Types (elementToNode, documentToNonElementParentNode, Element, ElementId(ElementId), Document)
 import Data.Argonaut.Decode (decodeJson, class DecodeJson)
-import Data.Array (fromFoldable)
+import Data.Array (catMaybes, fromFoldable)
 import Data.Either (Either(Left, Right))
 import Data.Function.Uncurried (Fn2, Fn4, runFn4, runFn2)
 import Data.Generic (class Generic, gShow)
@@ -58,16 +58,23 @@ type PlayerId = ElementId
 runElementId :: ElementId -> String
 runElementId (ElementId eId) = eId
 
-type PlaylistItem =
-  { sources ::
-      -- make this type a record
-      Array
-        { src :: String
-        , type :: String
-        }
+type Sources =
+  { rtmpUrl :: Maybe String
+  , hlsUrl :: Maybe String
+  , mpegDashUrl :: Maybe String
+  }
+
+type PlaylistItemBase sources =
+  { sources :: sources
   , poster :: Nullable String
   }
-type Playlist = Array PlaylistItem
+
+type PlaylistBase sources = Array (PlaylistItemBase sources)
+
+type Playlist = PlaylistBase Sources
+
+type NativePlaylist =
+  PlaylistBase (Array { type :: String, src :: String })
 
 data Tech = Flash | Html5
 
@@ -81,7 +88,7 @@ type Options =
   , controlBarVisibility :: Boolean
   -- , aspectRatio :: AspectRatio
   , debug :: Boolean
-  , playlist :: Playlist
+  , playlist :: Array (PlaylistItemBase Sources)
   , preload :: Preload
   , techOrder :: NonEmpty Array Tech
   , watermark :: Maybe Watermark
@@ -112,8 +119,8 @@ foreign import videojsImpl ::
 
 foreign import playlistImpl ::
   forall eff.
-    Fn2 Videojs Playlist (Eff (videojs :: VIDEOJS, dom :: DOM | eff) Unit)
-playlist :: forall eff. Videojs -> Playlist -> Eff (videojs :: VIDEOJS, dom :: DOM | eff) Unit
+    Fn2 Videojs NativePlaylist (Eff (videojs :: VIDEOJS, dom :: DOM | eff) Unit)
+playlist :: forall eff. Videojs -> NativePlaylist -> Eff (videojs :: VIDEOJS, dom :: DOM | eff) Unit
 playlist = runFn2 playlistImpl
 
 type Index = Int
@@ -160,10 +167,21 @@ videojs options = do
       result <- runFn4 videojsImpl Left Right rawPlayerId nativeOptions
       case result of
         Right v -> do
-          (playlist v options.playlist)
+          (playlist v (toNativePlaylist options.playlist))
           pure result
         err -> pure result
  where
+  toNativePlaylist =
+    map toPlaylistItem
+   where
+    fromSources sources =
+      ((catMaybes
+        [ {src: _, type: "rtmp/mp4"} <$> sources.rtmpUrl
+        , {src: _, type: "application/x-mpegurl"} <$> sources.hlsUrl
+        , {src: _, type: "application/dash+xml"} <$> sources.mpegDashUrl
+        ]) :: Array { src:: String, type:: String })
+    toPlaylistItem { poster, sources } = { poster: poster, sources: fromSources sources }
+
   toNativeWatermark :: Watermark -> NativeWatermark
   toNativeWatermark watermark =
     watermark { position = serPosition watermark.position}

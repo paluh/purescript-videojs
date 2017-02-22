@@ -19,15 +19,27 @@ if (typeof Array.prototype.forEach != 'function') {
 
 exports.videojsImpl = function(left, right, playerElementId, options) {
   return function() {
-    var player, result;
+    var player, result, rtmpParts;
     try {
-      player = videojs(playerElementId, options);
-      if(videojs.Flash !== undefined) {
-        videojs.Flash.prototype.play = function(){
-            this.el_.vjs_load();
-            this.el_.vjs_play();
+      videojs.getComponent('Flash').prototype.play = function(){
+        this.el_.vjs_load();
+        this.el_.vjs_play();
+      };
+      videojs.getComponent('Flash').streamToParts = function(src) {
+        var parts = {
+          connection: '',
+          stream: ''
         };
-      }
+        if (!src) {
+          return parts;
+        }
+        rtmpParts = /(rtmp.*live\/)(.*)/.exec(src);
+        parts.connection = rtmpParts[1];
+        parts.stream = rtmpParts[2];
+        return parts;
+      };
+
+      player = videojs(playerElementId, options);
       player.qualityPickerPlugin();
       if(options.watermark) {
         player.watermark({
@@ -52,6 +64,7 @@ exports.playlistImpl = function(player, playlist) {
 
 exports.playlistItemImpl = function(player, index) {
   return function() {
+    //player.stop();
     return player.currentItem(index);
   };
 };
