@@ -5,7 +5,7 @@
     "purescript-dom": "^3.1.0",
     "purescript-functions": "^2.0.0",
     "purescript-generics": "^3.1.0",
-    "purescript-foreign-generic": "^2.0.0",
+    "purescript-foreign-generic": "^3.0.0",
     "purescript-newtype": "^1.2.0",
     "purescript-nonempty": "^3.0.0",
     "purescript-signal": "^8.0.0",
