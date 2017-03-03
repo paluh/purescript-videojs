@@ -1,6 +1,24 @@
-I. There are some compilation issues:
+I. Installation
 
-  * change `bower_components/video.js/bower.json`:
+    I was able to use purescript-videojs with minimal overhead:
+
+    * copied webpack.config.json
+
+    * copied .babelrc
+
+    * added this line to app.js:
+
+        require('purescript-videojs');
+
+    * I still don't know if all plugins are working correctly (for example videojs-playlist)
+
+
+II. Here you have old HOWTO
+
+
+  There are some compilation issues:
+
+  * change `bower_components/bower.json`:
 
       "main": [
         "dist/alt/video.novtt.js",
@@ -20,3 +38,6 @@ I. There are some compilation issues:
   * copy webpack settings:
 
     - be careful to not compile hls.js second time with babel!
+
+
+

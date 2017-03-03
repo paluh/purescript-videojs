@@ -64,17 +64,17 @@ type Sources =
   , mpegDashUrl :: Maybe String
   }
 
-type PlaylistItemBase sources =
+type PlaylistItemBase sources poster =
   { sources :: sources
-  , poster :: Nullable String
+  , poster ∷ poster
   }
 
-type PlaylistBase sources = Array (PlaylistItemBase sources)
+type PlaylistBase sources poster = Array (PlaylistItemBase sources poster)
 
-type Playlist = PlaylistBase Sources
+type Playlist = PlaylistBase Sources (Maybe String)
 
 type NativePlaylist =
-  PlaylistBase (Array { type :: String, src :: String })
+  PlaylistBase (Array { type :: String, src :: String }) (Nullable String)
 
 data Tech = Flash | Html5
 
@@ -88,7 +88,7 @@ type Options =
   , controlBarVisibility :: Boolean
   -- , aspectRatio :: AspectRatio
   , debug :: Boolean
-  , playlist :: Array (PlaylistItemBase Sources)
+  , playlist :: Playlist
   , preload :: Preload
   , techOrder :: NonEmpty Array Tech
   , watermark :: Maybe Watermark
@@ -180,7 +180,7 @@ videojs options = do
         , {src: _, type: "application/x-mpegurl"} <$> sources.hlsUrl
         , {src: _, type: "application/dash+xml"} <$> sources.mpegDashUrl
         ]) :: Array { src:: String, type:: String })
-    toPlaylistItem { poster, sources } = { poster: poster, sources: fromSources sources }
+    toPlaylistItem { poster, sources } = { poster: toNullable poster, sources: fromSources sources }
 
   toNativeWatermark :: Watermark -> NativeWatermark
   toNativeWatermark watermark =
