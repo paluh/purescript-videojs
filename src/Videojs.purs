@@ -59,11 +59,10 @@ type PlayerId = ElementId
 runElementId :: ElementId -> String
 runElementId (ElementId eId) = eId
 
-type Sources extraProtocols =
+type Sources =
   { rtmp ∷  Maybe String
   , hls ∷  Maybe String
   , mpegDash ∷  Maybe String
-  | extraProtocols
   }
 
 type PlaylistItemBase sources poster =
@@ -73,7 +72,7 @@ type PlaylistItemBase sources poster =
 
 type PlaylistBase sources poster = Array (PlaylistItemBase sources poster)
 
-type Playlist extraProtocols = PlaylistBase (Sources extraProtocols) (Maybe String)
+type Playlist = PlaylistBase Sources (Maybe String)
 
 type NativePlaylist =
   PlaylistBase (Array { type :: String, src :: String }) (Nullable String)
@@ -84,13 +83,13 @@ techToNative :: Tech -> String
 techToNative Flash = "flash"
 techToNative Html5 = "html5"
 
-type Options extraProtocols =
+type Options =
   { autoPlay :: Boolean
   , parentId :: ParentId
   , controlBarVisibility :: Boolean
   -- , aspectRatio :: AspectRatio
   , debug :: Boolean
-  , playlist :: Playlist extraProtocols
+  , playlist :: Playlist
   , preload :: Preload
   , techOrder :: NonEmpty Array Tech
   , watermark :: Maybe Watermark
@@ -144,7 +143,7 @@ createVideoElement document playerId = do
   setAttribute "class" "video-js vjs-default-skin vjs-fluid vjs-16-9" videoElement
   pure videoElement
 
-videojs :: ∀ eff ep. Options ep -> Eff (dom :: DOM, videojs :: VIDEOJS | eff) (Either String Videojs)
+videojs :: ∀ eff. Options → Eff (dom :: DOM, videojs :: VIDEOJS | eff) (Either String Videojs)
 videojs options = do
   document <- window >>= ((htmlDocumentToDocument <$> _) <<< Window.document)
   let

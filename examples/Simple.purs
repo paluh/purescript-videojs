@@ -26,7 +26,6 @@ run = do
               -- , rtmp: Just "rtmp://stream5.nadaje.com:12142/live/gmX498.stream?secure-endtime=1487851377.22&secure-hash=w-uKTAaeSEjOcGKm6km-eVFLRrf9WZO1X7jmLW-KbhQ="
               , rtmp: Just "rtmp://127.0.0.1:20222/live/test.stream?secure-end_time=1487858692.2&secure-hash=mFakhb2DOpQYXUr5lHWUK_72Dvev_yLEZ8R--q8DZFg="
               , mpegDash: (Nothing ∷ Maybe String)
-              , rtsp: "test"
               }
             , poster: Nothing
             }
