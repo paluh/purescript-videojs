@@ -16,6 +16,7 @@ import Data.Array (catMaybes, fromFoldable)
 import Data.Either (Either(Left, Right))
 import Data.Function.Uncurried (Fn2, Fn4, runFn4, runFn2)
 import Data.Generic (class Generic, gShow)
+import Data.Generic.Rep.Show (genericShow)
 import Data.Maybe (Maybe(Just, Nothing))
 import Data.NonEmpty (NonEmpty)
 import Data.Nullable (toNullable, toMaybe, Nullable)
@@ -33,7 +34,7 @@ preloadToNative Metadata = "metadata"
 preloadToNative None = "none"
 
 data WatermarkPosition = TopLeft | TopRight | BottomRight | BottomLeft
-derive instance genericWatermarkPosition :: Generic WatermarkPosition
+derive instance genericWatermarkPosition ∷ Generic WatermarkPosition _
 instance decodeJsonWatermarkPosition :: DecodeJson (WatermarkPosition) where
   decodeJson json =
     decodeJson json >>= decode
@@ -44,7 +45,7 @@ instance decodeJsonWatermarkPosition :: DecodeJson (WatermarkPosition) where
     decode "bottom-left" = Right BottomLeft
     decode _ = Left "Incorrect watermark position value"
 instance showWatermarkPosition :: Show WatermarkPosition where
-  show = gShow
+  show = genericShow
 
 type Watermark =
   { url :: String
