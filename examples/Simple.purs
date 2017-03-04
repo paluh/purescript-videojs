@@ -9,7 +9,6 @@ import Data.Array (singleton)
 import Data.Either (Either(..))
 import Data.Maybe (Maybe(..))
 import Data.NonEmpty ((:|))
-import Data.Nullable (toNullable)
 import Videojs (Preload(..), Tech(..), VIDEOJS, WatermarkPosition(..), videojs)
 
 run :: forall eff. Eff ( console :: CONSOLE, videojs :: VIDEOJS, dom :: DOM | eff ) Unit
@@ -23,12 +22,13 @@ run = do
       , playlist:
           singleton
             { sources:
-              { hlsUrl: Just "http://stream5.nadaje.com:12146/live/stream-1.stream/playlist.m3u8"
-              -- , rtmpUrl: Just "rtmp://stream5.nadaje.com:12142/live/gmX498.stream?secure-endtime=1487851377.22&secure-hash=w-uKTAaeSEjOcGKm6km-eVFLRrf9WZO1X7jmLW-KbhQ="
-              , rtmpUrl: Just "rtmp://127.0.0.1:20222/live/test.stream?secure-end_time=1487858692.2&secure-hash=mFakhb2DOpQYXUr5lHWUK_72Dvev_yLEZ8R--q8DZFg="
-              , mpegDashUrl: Nothing
+              { hls: Just "http://stream5.nadaje.com:12146/live/stream-1.stream/playlist.m3u8"
+              -- , rtmp: Just "rtmp://stream5.nadaje.com:12142/live/gmX498.stream?secure-endtime=1487851377.22&secure-hash=w-uKTAaeSEjOcGKm6km-eVFLRrf9WZO1X7jmLW-KbhQ="
+              , rtmp: Just "rtmp://127.0.0.1:20222/live/test.stream?secure-end_time=1487858692.2&secure-hash=mFakhb2DOpQYXUr5lHWUK_72Dvev_yLEZ8R--q8DZFg="
+              , mpegDash: (Nothing ∷ Maybe String)
+              , rtsp: "test"
               }
-            , poster: toNullable Nothing
+            , poster: Nothing
             }
       , preload: Metadata
       , techOrder: Flash :| [Html5]

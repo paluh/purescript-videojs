@@ -59,20 +59,21 @@ type PlayerId = ElementId
 runElementId :: ElementId -> String
 runElementId (ElementId eId) = eId
 
-type Sources =
-  { rtmpUrl :: Maybe String
-  , hlsUrl :: Maybe String
-  , mpegDashUrl :: Maybe String
+type Sources extraProtocols =
+  { rtmp ∷  Maybe String
+  , hls ∷  Maybe String
+  , mpegDash ∷  Maybe String
+  | extraProtocols
   }
 
 type PlaylistItemBase sources poster =
-  { sources :: sources
+  { sources ∷ sources
   , poster ∷ poster
   }
 
 type PlaylistBase sources poster = Array (PlaylistItemBase sources poster)
 
-type Playlist = PlaylistBase Sources (Maybe String)
+type Playlist extraProtocols = PlaylistBase (Sources extraProtocols) (Maybe String)
 
 type NativePlaylist =
   PlaylistBase (Array { type :: String, src :: String }) (Nullable String)
@@ -83,13 +84,13 @@ techToNative :: Tech -> String
 techToNative Flash = "flash"
 techToNative Html5 = "html5"
 
-type Options =
+type Options extraProtocols =
   { autoPlay :: Boolean
   , parentId :: ParentId
   , controlBarVisibility :: Boolean
   -- , aspectRatio :: AspectRatio
   , debug :: Boolean
-  , playlist :: Playlist
+  , playlist :: Playlist extraProtocols
   , preload :: Preload
   , techOrder :: NonEmpty Array Tech
   , watermark :: Maybe Watermark
@@ -143,7 +144,7 @@ createVideoElement document playerId = do
   setAttribute "class" "video-js vjs-default-skin vjs-fluid vjs-16-9" videoElement
   pure videoElement
 
-videojs :: forall eff. Options -> Eff (dom :: DOM, videojs :: VIDEOJS | eff) (Either String Videojs)
+videojs :: ∀ eff ep. Options ep -> Eff (dom :: DOM, videojs :: VIDEOJS | eff) (Either String Videojs)
 videojs options = do
   document <- window >>= ((htmlDocumentToDocument <$> _) <<< Window.document)
   let
@@ -177,9 +178,9 @@ videojs options = do
    where
     fromSources sources =
       ((catMaybes
-        [ {src: _, type: "rtmp/mp4"} <$> sources.rtmpUrl
-        , {src: _, type: "application/x-mpegurl"} <$> sources.hlsUrl
-        , {src: _, type: "application/dash+xml"} <$> sources.mpegDashUrl
+        [ {src: _, type: "rtmp/mp4"} <$> sources.rtmp
+        , {src: _, type: "application/x-mpegurl"} <$> sources.hls
+        , {src: _, type: "application/dash+xml"} <$> sources.mpegDash
         ]) :: Array { src:: String, type:: String })
     toPlaylistItem { poster, sources } = { poster: toNullable poster, sources: fromSources sources }
 

@@ -9,7 +9,6 @@ import Data.Array (fromFoldable)
 import Data.Either (Either(..))
 import Data.Maybe (Maybe(..))
 import Data.NonEmpty ((:|))
-import Data.Nullable (toNullable)
 import Partial.Unsafe (unsafePartial)
 import Videojs (Preload(..), Tech(..), VIDEOJS, Videojs, WatermarkPosition(..), videojs)
 
@@ -28,39 +27,39 @@ run = do
       , playlist:
           fromFoldable
             [ { sources:
-                { hlsUrl: Just "http://stream6.nadaje.com:14968/live/ngrp:test.stream_all/playlist.m3u8"
-                , rtmpUrl: Nothing
-                , mpegDashUrl: Nothing
+                { hls: Just "http://stream6.nadaje.com:14968/live/ngrp:test.stream_all/playlist.m3u8"
+                , rtmp: Nothing
+                , mpegDash: Nothing
                 }
-              , poster: toNullable $ Just "https://nadaje.com/static/upload/splashes/P1020758.JPG"
+              , poster: Just "https://nadaje.com/static/upload/splashes/P1020758.JPG"
               }
             , { sources:
-                { hlsUrl: Just "http://stream6.nadaje.com:14968/live/ngrp:iGF603.stream_all/playlist.m3u8"
-                , rtmpUrl: Nothing
-                , mpegDashUrl: Nothing
+                { hls: Just "http://stream6.nadaje.com:14968/live/ngrp:iGF603.stream_all/playlist.m3u8"
+                , rtmp: Nothing
+                , mpegDash: Nothing
                 }
-              , poster: toNullable $ Just "https://nadaje.com/static/upload/splashes/lidl.jpg"
+              , poster: Just "https://nadaje.com/static/upload/splashes/lidl.jpg"
               }
             , { sources:
-                { hlsUrl: Just "http://stream6.nadaje.com:14968/live/ngrp:VpN604.stream_all/playlist.m3u8"
-                , rtmpUrl: Nothing
-                , mpegDashUrl: Nothing
+                { hls: Just "http://stream6.nadaje.com:14968/live/ngrp:VpN604.stream_all/playlist.m3u8"
+                , rtmp: Nothing
+                , mpegDash: Nothing
                 }
-              , poster: toNullable $ Just "https://nadaje.com/static/upload/splashes/P1020763.JPG"
+              , poster: Just "https://nadaje.com/static/upload/splashes/P1020763.JPG"
               }
             , { sources:
-                { hlsUrl: Just "http://stream6.nadaje.com:14968/live/ngrp:test-12.stream_all/playlist.m3u8"
-                , rtmpUrl: Nothing
-                , mpegDashUrl: Nothing
+                { hls: Just "http://stream6.nadaje.com:14968/live/ngrp:test-12.stream_all/playlist.m3u8"
+                , rtmp: Nothing
+                , mpegDash: Nothing
                 }
-              , poster: toNullable $ Just "https://nadaje.com/static/upload/splashes/mandelbrot.jpg"
+              , poster: Just "https://nadaje.com/static/upload/splashes/mandelbrot.jpg"
               }
             , { sources:
-                { hlsUrl: Just "http://stream6.nadaje.com:14968/live/ngrp:RWW605.stream_all/playlist.m3u8"
-                , rtmpUrl: Nothing
-                , mpegDashUrl: Nothing
+                { hls: Just "http://stream6.nadaje.com:14968/live/ngrp:RWW605.stream_all/playlist.m3u8"
+                , rtmp: Nothing
+                , mpegDash: Nothing
                 }
-              , poster: toNullable $ Just "https://nadaje.com/static/upload/splashes/P1020730_xgntXJj.JPG"
+              , poster: Just "https://nadaje.com/static/upload/splashes/P1020730_xgntXJj.JPG"
               }
             ]
       , preload: Metadata
