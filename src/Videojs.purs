@@ -33,7 +33,7 @@ preloadToNative Auto = "auto"
 preloadToNative Metadata = "metadata"
 preloadToNative None = "none"
 
-data WatermarkPosition = TopLeft | TopRight | BottomRight | BottomLeft
+data WatermarkPosition = TopRight | BottomRight | BottomLeft | TopLeft
 derive instance genericWatermarkPosition ∷ Generic WatermarkPosition _
 instance decodeJsonWatermarkPosition :: DecodeJson (WatermarkPosition) where
   decodeJson json =
