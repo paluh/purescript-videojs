@@ -12,8 +12,11 @@ I. Installation
 
     * I still don't know if all plugins are working correctly (for example videojs-playlist)
 
+II. To run pux related builds/examples you have to:
 
-II. Here you have old HOWTO
+  npm install react@15.4.2 react-dom@15.4.2
+
+III. Here you have old HOWTO
 
 
   There are some compilation issues:

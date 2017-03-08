@@ -4,14 +4,26 @@
     <title>purescript-webpack-example</title>
     <link rel="stylesheet" type="text/css" href="./css/purescript-videojs.css" />
     <style>
-        #player {
-            width: 600px;
+        .player {
+            width: 800px;
+        }
+        .vjs-js {
+          width: 100%;
         }
     </style>
 </head>
 <body>
-  <div id="player">
-  </div>
-  <script src="bundle.js"></script>
+  <div class="player" id="player-simple"></div>
+  <script src="output/simple.bundle.js"></script>
+  <script type="text/javascript">
+    simple.run("player-simple")();
+  </script>
+
+
+  <div class="player" id="player-pux"></div>
+  <script src="output/pux.bundle.js"></script>
+  <script type="text/javascript">
+    simple.run("player-pux")();
+  </script>
 </body>
 </html>

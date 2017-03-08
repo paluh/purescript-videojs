@@ -8,51 +8,54 @@ require('videojs-playlist');
 require('videojs-watermark');
 require('videojs-quality-picker');
 require('videojs5-hlsjs-source-handler');
+require('purescript-videojs.css');
 
-if (typeof Array.prototype.forEach != 'function') {
-    Array.prototype.forEach = function(callback){
-      for (var i = 0; i < this.length; i++){
-        callback.apply(this, [this[i], i, this]);
-      }
-    };
-}
+videojs.getComponent('Flash').prototype.play = function(){
+  this.el_.vjs_load();
+  this.el_.vjs_play();
+};
+
+videojs.getComponent('Flash').streamToParts = function(src) {
+  var parts = {
+    connection: '',
+    stream: ''
+  }, rtmpParts;
+  if (!src) {
+    return parts;
+  }
+  rtmpParts = /(rtmp.*live\/)(.*)/.exec(src);
+  parts.connection = rtmpParts[1];
+  parts.stream = rtmpParts[2];
+  return parts;
+};
+
+
+exports.playerInit = function(playerElementId, options) {
+  var player;
+  player = videojs(playerElementId, options);
+  player.qualityPickerPlugin();
+  return player;
+};
 
 exports.videojsImpl = function(left, right, playerElementId, options) {
   return function() {
-    var player, result, rtmpParts;
+    var result;
     try {
-      videojs.getComponent('Flash').prototype.play = function(){
-        this.el_.vjs_load();
-        this.el_.vjs_play();
-      };
-      videojs.getComponent('Flash').streamToParts = function(src) {
-        var parts = {
-          connection: '',
-          stream: ''
-        };
-        if (!src) {
-          return parts;
-        }
-        rtmpParts = /(rtmp.*live\/)(.*)/.exec(src);
-        parts.connection = rtmpParts[1];
-        parts.stream = rtmpParts[2];
-        return parts;
-      };
-
-      player = videojs(playerElementId, options);
-      player.qualityPickerPlugin();
-      if(options.watermark) {
-        player.watermark({
-          'image': options.watermark.url,
-          'fadeOut': options.watermark.fadeOut,
-          'position': options.watermark.position
-        });
-      }
-      result = right(player);
+      result = right(exports.playerInit(playerElementId, options));
     } catch(err) {
       result = left("videojs error: \n" + err);
     }
     return result;
+  };
+};
+
+exports.watermarkImpl = function(player, watermark) {
+  return function() {
+    if(watermark) {
+      player.watermark(watermark);
+    } else {
+      player.watermark({});
+    }
   };
 };
 
@@ -64,7 +67,6 @@ exports.playlistImpl = function(player, playlist) {
 
 exports.playlistItemImpl = function(player, index) {
   return function() {
-    //player.stop();
-    return player.currentItem(index);
+    return player.playlist.currentItem(index);
   };
 };

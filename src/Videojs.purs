@@ -97,7 +97,7 @@ type Options =
   }
 
 type NativeWatermark =
-  { url :: String
+  { image :: String
   , fadeOut :: Maybe Int
   , position :: String
   }
@@ -111,7 +111,6 @@ type NativeOptions =
   , preload :: String
   , html5 :: { hlsjsConfig :: HlsjsConfig }
   , techOrder :: Array String
-  , watermark :: Nullable NativeWatermark
   }
 
 foreign import videojsImpl ::
@@ -123,6 +122,15 @@ foreign import playlistImpl ::
     Fn2 Videojs NativePlaylist (Eff (videojs :: VIDEOJS, dom :: DOM | eff) Unit)
 playlist :: forall eff. Videojs -> NativePlaylist -> Eff (videojs :: VIDEOJS, dom :: DOM | eff) Unit
 playlist = runFn2 playlistImpl
+
+foreign import watermarkImpl ::
+  forall eff.
+    Fn2 Videojs (Nullable NativeWatermark) (Eff (videojs :: VIDEOJS, dom :: DOM | eff) Unit)
+watermark ∷
+  ∀ eff. Videojs →
+  Nullable NativeWatermark →
+  Eff (videojs :: VIDEOJS, dom :: DOM | eff) Unit
+watermark = runFn2 watermarkImpl
 
 type Index = Int
 
@@ -155,40 +163,42 @@ videojs options = do
   case maybeParentElement of
     Nothing -> pure <<< Left $ "Parent element not found: " <> rawParentId
     Just parentElement -> do
-      let
-        nativeOptions =
-          { autoplay: options.autoPlay
-          , controls: options.controlBarVisibility
-          , html5: { hlsjsConfig: { debug: options.debug } }
-          , preload: preloadToNative options.preload
-          , techOrder: fromFoldable <<< map techToNative $ options.techOrder
-          , watermark: toNullable (toNativeWatermark <$> options.watermark)
-          }
       appendChild (elementToNode videoElement) (elementToNode parentElement)
-      result <- runFn4 videojsImpl Left Right rawPlayerId nativeOptions
+      result <- runFn4 videojsImpl Left Right rawPlayerId (toNativeOptions options)
       case result of
         Right v -> do
           (playlist v (toNativePlaylist options.playlist))
+          (watermark v (toNullable $ toNativeWatermark <$> options.watermark))
           pure result
         err -> pure result
- where
-  toNativePlaylist =
-    map toPlaylistItem
-   where
-    fromSources sources =
-      ((catMaybes
-        [ {src: _, type: "rtmp/mp4"} <$> sources.rtmp
-        , {src: _, type: "application/x-mpegurl"} <$> sources.hls
-        , {src: _, type: "application/dash+xml"} <$> sources.mpegDash
-        ]) :: Array { src:: String, type:: String })
-    toPlaylistItem { poster, sources } = { poster: toNullable poster, sources: fromSources sources }
 
-  toNativeWatermark :: Watermark -> NativeWatermark
-  toNativeWatermark watermark =
-    watermark { position = serPosition watermark.position}
-   where
-    serPosition TopRight = "top-right"
-    serPosition TopLeft = "top-left"
-    serPosition BottomLeft = "bottom-left"
-    serPosition BottomRight = "bottom-right"
+toNativeOptions ∷ Options → NativeOptions
+toNativeOptions options =
+  { autoplay: options.autoPlay
+  , controls: options.controlBarVisibility
+  , html5: { hlsjsConfig: { debug: options.debug } }
+  , preload: preloadToNative options.preload
+  , techOrder: fromFoldable <<< map techToNative $ options.techOrder
+  }
+
+toNativePlaylist ∷ Playlist → NativePlaylist
+toNativePlaylist =
+  map toPlaylistItem
+ where
+  fromSources sources =
+    ((catMaybes
+      [ {src: _, type: "rtmp/mp4"} <$> sources.rtmp
+      , {src: _, type: "application/x-mpegurl"} <$> sources.hls
+      , {src: _, type: "application/dash+xml"} <$> sources.mpegDash
+      ]) :: Array { src:: String, type:: String })
+  toPlaylistItem { poster, sources } = { poster: toNullable poster, sources: fromSources sources }
+
+toNativeWatermark :: Watermark -> NativeWatermark
+toNativeWatermark { fadeOut, url, position }  =
+  { fadeOut, position: serPosition position, image: url }
+ where
+  serPosition TopRight = "top-right"
+  serPosition TopLeft = "top-left"
+  serPosition BottomLeft = "bottom-left"
+  serPosition BottomRight = "bottom-right"
 

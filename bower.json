@@ -8,6 +8,7 @@
     "purescript-foreign-generic": "^3.0.0",
     "purescript-newtype": "^1.2.0",
     "purescript-nonempty": "^3.0.0",
+    "purescript-pux": "^7.0.0",
     "purescript-signal": "^8.0.0",
     "hls.js": "^0.6.20",
     "video.js": "^5.17",

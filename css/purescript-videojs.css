@@ -1,3 +1,6 @@
+.vjs-js {
+  width: 100%;
+}
 .video-js .vjs-watermark-content {
   padding: 2%;
   max-width: 40%;
