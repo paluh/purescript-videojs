@@ -1,6 +1,5 @@
 module PuxComponentSimple where
 
-import VideojsPuxComponent
 import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Exception (EXCEPTION)
 import DOM.Node.Types (ElementId(..))
@@ -9,11 +8,13 @@ import Data.Maybe (Maybe(..))
 import Data.NonEmpty ((:|))
 import Data.Nullable (toNullable)
 import Pux (noEffects, renderToDOM, start)
-import Pux.Html (div, h1, Html, text)
+import Pux.Html (Html, div, text)
 import Signal.Channel (CHANNEL)
-import Videojs (Preload(..), Tech(..), WatermarkPosition(..), toNativeOptions, toNativePlaylist, toNativeWatermark)
+import Videojs (Playlist, Preload(Metadata), Tech(Html5, Flash), WatermarkPosition(TopLeft), toNativeOptions, toNativePlaylist, toNativeWatermark)
+import VideojsPuxComponent (videojsComponent)
 import Prelude hiding (div)
 
+playlist :: Playlist
 playlist =
     singleton
       { sources:

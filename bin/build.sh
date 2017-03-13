@@ -2,13 +2,21 @@
 
 babel ./src/VideojsPuxComponent.jsx > src/VideojsPuxComponent.js
 if [ "$1" == "DEV" ]; then
-  echo "devel"
+  echo "Building webpack development builder..."
+elif [ "$1" == "DLL" ]; then
+  echo "Rebuilding developement dll..."
 else
-  echo "production";
+  echo "Building production bundle...";
 fi
+
 if [ "$1" == "DEV" ];
 then
   DEBUG=purs-loader webpack --env.pux --env.simple --env.devel --watch --config webpack.config.js --progress
+elif [ "$1" == "DLL" ]; then
+  # pulp build
+  DEBUG=purs-loader webpack --config webpack.dll.js
+elif [ "$1" == "SNC" ]; then
+  DEBUG=purs-loader webpack --env.production --env.snc --config webpack.config.js --progress
 else
   DEBUG=purs-loader webpack --env.production --env.simple --config webpack.config.js --optimize-minimize
   DEBUG=purs-loader webpack --env.production --env.pux --config webpack.config.js --optimize-minimize

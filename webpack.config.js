@@ -8,7 +8,10 @@ var bowerWebpackPlugin = new BowerWebpackPlugin({moduleDirectories: ['./bower_co
 
 module.exports = function(env) {
   var entries = {},
-      pscBundleArgs = {};
+      pscBundleArgs = {},
+      libraryTarget = 'library',
+      library = '[name]',
+      externals = {};
 
   if(env.simple) {
     entries.simple = './examples/Simple';
@@ -19,6 +22,15 @@ module.exports = function(env) {
   }
   if(env.simple && env.pux) {
     pscBundleArgs = {};
+  }
+
+  if(env.snc) {
+    entries.snc = './examples/Snc';
+    pscBundleArgs = {'module': 'Snc'};
+    libraryTarget = 'amd';
+    library = 'videoChat';
+    externals.converse = 'converse';
+    externals.jquery = 'jQuery';
   }
 
   var r = {
@@ -34,12 +46,17 @@ module.exports = function(env) {
       output:
         { path: path.join(__dirname, './output'),
           pathinfo: true,
-          library: '[name]',
+          library: library,
+          libraryTarget: libraryTarget,
           filename: '[name].bundle.js',
         },
       plugins: [
         bowerWebpackPlugin,
         new webpack.ProvidePlugin({'window.videojs': 'video.js', 'videojs': 'video.js'})
+        //new webpack.DllReferencePlugin({
+        //    context: path.join(__dirname, "src"),
+        //    manifest: require("./output/vendors.manifest.dll.json")
+        //}),
       ],
       module: {
         loaders: [{
@@ -74,6 +91,7 @@ module.exports = function(env) {
               loader: "style-loader!css-loader!sass-loader"
             }]
       },
+      externals: externals,
       resolve: {
         plugins: [bowerWebpackPlugin],
         modules: [
