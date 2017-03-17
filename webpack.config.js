@@ -4,14 +4,14 @@ var BowerWebpackPlugin = require('bower-webpack-plugin');
 var path = require('path');
 var webpack = require('webpack');
 
-var bowerWebpackPlugin = new BowerWebpackPlugin({moduleDirectories: ['./bower_components']});
 
 module.exports = function(env) {
   var entries = {},
       pscBundleArgs = {},
-      libraryTarget = 'library',
+      libraryTarget = 'var',
       library = '[name]',
-      externals = {};
+      externals = {},
+      bowerWebpackPlugin = new BowerWebpackPlugin({moduleDirectories: ['./bower_components']});
 
   if(env.simple) {
     entries.simple = './examples/Simple';
@@ -22,6 +22,20 @@ module.exports = function(env) {
   }
   if(env.simple && env.pux) {
     pscBundleArgs = {};
+  }
+
+  var plugins = [
+      bowerWebpackPlugin,
+      new webpack.ProvidePlugin({'window.videojs': 'video.js', 'videojs': 'video.js'})
+  ];
+
+  if(env.devel) {
+      plugins.push(
+        new webpack.DllReferencePlugin({
+            context: path.join(__dirname, "src"),
+            manifest: require("./output/vendors.manifest.dll.json")
+        })
+      );
   }
 
   if(env.snc) {
@@ -50,14 +64,7 @@ module.exports = function(env) {
           libraryTarget: libraryTarget,
           filename: '[name].bundle.js',
         },
-      plugins: [
-        bowerWebpackPlugin,
-        new webpack.ProvidePlugin({'window.videojs': 'video.js', 'videojs': 'video.js'})
-        //new webpack.DllReferencePlugin({
-        //    context: path.join(__dirname, "src"),
-        //    manifest: require("./output/vendors.manifest.dll.json")
-        //}),
-      ],
+      plugins: plugins,
       module: {
         loaders: [{
            test: /\.purs$/,

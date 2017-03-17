@@ -23,7 +23,9 @@ run elementId = do
           singleton
             { sources:
               { hls: Just "http://stream5.nadaje.com:12146/live/stream-1.stream/playlist.m3u8"
-              , rtmp: Just "rtmp://stream5.nadaje.com:12142/live/gmX498.stream?secure-endtime=1487851377.22&secure-hash=w-uKTAaeSEjOcGKm6km-eVFLRrf9WZO1X7jmLW-KbhQ="
+              , rtmp: Just "rtmp://stream4-clone.nadaje.com:8000/live/TZQ1.stream?secure-endtime=1489851043&secure-hash=2brsbcMbBOvhWyq8wmD2pUpySlFbAGwMZUNyseE1tdQ="
+              -- , rtmp: Just "rtmp://stream4-clone.nadaje.com:8000/live/TZQ1.stream?secure-hash=Nytl15fQ4vzozz48mOY4I09sAsH6AJyVJIqe0USi5Rk="
+
               -- , rtmp: Just "rtmp://127.0.0.1:20222/live/test.stream?secure-end_time=1487858692.2&secure-hash=mFakhb2DOpQYXUr5lHWUK_72Dvev_yLEZ8R--q8DZFg="
               , mpegDash: (Nothing ∷ Maybe String)
               }
