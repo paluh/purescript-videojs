@@ -8,7 +8,6 @@ require('videojs-playlist');
 require('videojs-watermark');
 require('videojs-quality-picker');
 require('videojs5-hlsjs-source-handler');
-require('purescript-videojs.css');
 
 videojs.getComponent('Flash').prototype.play = function(){
   this.el_.vjs_load();
