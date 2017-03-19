@@ -49,7 +49,7 @@ module.exports = function(env) {
 
   var r = {
     entry: entries,
-      devtool: env.devel?'eval':'source-map',
+      devtool: env.devel?'eval':'cheap-module-source-map',
       cache: true,
       devServer:
         { contentBase: '.',
