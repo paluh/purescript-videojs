@@ -109,6 +109,8 @@ type NativeOptions =
   { autoplay :: Boolean
   , controls :: Boolean
   , preload :: String
+  , flash ∷ { swf ∷ String }
+  , fluid ∷ Boolean
   , html5 :: { hlsjsConfig :: HlsjsConfig }
   , techOrder :: Array String
   }
@@ -176,6 +178,8 @@ toNativeOptions ∷ Options → NativeOptions
 toNativeOptions options =
   { autoplay: options.autoPlay
   , controls: options.controlBarVisibility
+  , flash: {swf: "//vjs.zencdn.net/swf/5.2.0/video-js.swf"}
+  , fluid: true
   , html5: { hlsjsConfig: { debug: options.debug } }
   , preload: preloadToNative options.preload
   , techOrder: fromFoldable <<< map techToNative $ options.techOrder

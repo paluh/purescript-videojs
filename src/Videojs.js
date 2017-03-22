@@ -4,7 +4,6 @@
 // module Videojs
 
 require('video.js');
-//require('videojs-errors');
 require('videojs-playlist');
 require('videojs-watermark');
 require('videojs-quality-picker');
@@ -33,10 +32,8 @@ videojs.getComponent('Flash').streamToParts = function(src) {
 
 exports.playerInit = function(playerElementId, options) {
   var player;
-  options.flash = {'swf': "//vjs.zencdn.net/swf/5.2.0/video-js.swf"};
   player = videojs(playerElementId, options);
   player.qualityPickerPlugin();
-  //player.errors();
   return player;
 };
 

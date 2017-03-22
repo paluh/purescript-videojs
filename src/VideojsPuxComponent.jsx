@@ -1,28 +1,11 @@
-require('video.js');
-require('videojs-playlist');
-require('videojs-watermark');
-require('videojs-quality-picker');
-require('videojs5-hlsjs-source-handler');
+/* global exports */
+"use strict";
+
+// module VideojsPuxComponent
+
 const React = require('react');
-
-videojs.getComponent('Flash').prototype.play = function(){
-  this.el_.vjs_load();
-  this.el_.vjs_play();
-};
-
-videojs.getComponent('Flash').streamToParts = function(src) {
-  var parts = {
-    connection: '',
-    stream: ''
-  }, rtmpParts;
-  if (!src) {
-    return parts;
-  }
-  rtmpParts = /(rtmp.*live\/)(.*)/.exec(src);
-  parts.connection = rtmpParts[1];
-  parts.stream = rtmpParts[2];
-  return parts;
-};
+// just for reimport of video.js stuff and patching
+require('./Videojs');
 
 let zip = (a1, a2) => a1.map((x, i) => [x, a2[i]]);
 
@@ -50,9 +33,11 @@ class VideoPlayer extends React.Component {
   }
   componentDidMount() {
     // instantiate video.js
-    this.player = videojs(this.videoNode, this.props.options, function onPlayerReady() {
-      console.log('onPlayerReady', this);
-    });
+    this.player = videojs(this.videoNode, this.props.options);
+    // this can be used to initialize signals...
+    //  , function onPlayerReady() {
+    //  console.log('onPlayerReady', this);
+    //});
     this.player.qualityPickerPlugin();
     this.player.playlist(this.props.playlist);
     this.player.playlist.currentItem(this.props.playlistItem);

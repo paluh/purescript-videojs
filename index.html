@@ -6,7 +6,7 @@
     <link rel="stylesheet" type="text/css" href="./css/purescript-videojs.css" />
     <style>
         .player {
-            width: 800px;
+            width: 300px;
         }
         .vjs-js {
           width: 100%;
@@ -14,19 +14,18 @@
     </style>
 </head>
 <body>
+  <h2>Native widget</h2>
   <div class="player" id="player-simple"></div>
   <script src="output/simple.bundle.js"></script>
   <script type="text/javascript">
     simple.run("player-simple")();
   </script>
 
-
-<!--
+  <h2>Pux component</h2>
   <div class="player" id="player-pux"></div>
   <script src="output/pux.bundle.js"></script>
   <script type="text/javascript">
     pux.run("player-pux")();
   </script>
--->
 </body>
 </html>

@@ -16,7 +16,8 @@ module.exports = function(env) {
   if(env.simple) {
     entries.simple = './examples/Simple';
     pscBundleArgs = {'module': 'Simple'};
-  } else if(env.pux) {
+  }
+  if(env.pux) {
     entries.pux = './examples/PuxComponentSimple';
     pscBundleArgs = {'module': 'PuxComponentSimple'};
   }

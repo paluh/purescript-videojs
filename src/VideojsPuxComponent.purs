@@ -1,9 +1,10 @@
 module VideojsPuxComponent where
 
-import Data.Nullable (Nullable)
+import Prelude
+import Data.Nullable (toNullable)
 import Pux.Html (Html, Attribute)
 import Pux.Html.Attributes (attr)
-import Videojs (Index, NativeOptions, NativePlaylist, NativeWatermark)
+import Videojs (Index, Options, toNativeOptions, toNativePlaylist, toNativeWatermark)
 
 foreign import videoPlayerComponentImpl
   ∷ ∀ a.
@@ -11,13 +12,18 @@ foreign import videoPlayerComponentImpl
   Array (Html a) ->
   Html a
 
-videojsComponent ∷ ∀ a. NativeOptions → Nullable NativeWatermark → NativePlaylist → Index → Html a
-videojsComponent options watermark playlist playlistIndex =
-  videoPlayerComponentImpl
-    [ attr "options" options
-    , attr "watermark" watermark
-    , attr "playlist" playlist
-    , attr "playlistItem" playlistIndex
-    ]
-    []
+videojsComponent ∷ ∀ a. Options → Index → Html a
+videojsComponent options playlistIndex =
+  let
+    options' = toNativeOptions options
+    playlist = toNativePlaylist options.playlist
+    watermark = toNullable $ toNativeWatermark <$> options.watermark
+  in
+    videoPlayerComponentImpl
+      [ attr "options" options'
+      , attr "watermark" watermark
+      , attr "playlist" playlist
+      , attr "playlistItem" playlistIndex
+      ]
+      []
 

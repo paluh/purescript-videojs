@@ -1,4 +1,7 @@
-'use strict';
+/* global exports */
+"use strict";
+
+// module VideojsPuxComponent
 
 var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
 
@@ -10,32 +13,9 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-require('video.js');
-require('videojs-playlist');
-require('videojs-watermark');
-require('videojs-quality-picker');
-require('videojs5-hlsjs-source-handler');
 var React = require('react');
-
-videojs.getComponent('Flash').prototype.play = function () {
-  this.el_.vjs_load();
-  this.el_.vjs_play();
-};
-
-videojs.getComponent('Flash').streamToParts = function (src) {
-  var parts = {
-    connection: '',
-    stream: ''
-  },
-      rtmpParts;
-  if (!src) {
-    return parts;
-  }
-  rtmpParts = /(rtmp.*live\/)(.*)/.exec(src);
-  parts.connection = rtmpParts[1];
-  parts.stream = rtmpParts[2];
-  return parts;
-};
+// just for reimport of video.js stuff and patching
+require('./Videojs');
 
 var zip = function zip(a1, a2) {
   return a1.map(function (x, i) {
@@ -82,9 +62,11 @@ var VideoPlayer = function (_React$Component) {
     key: 'componentDidMount',
     value: function componentDidMount() {
       // instantiate video.js
-      this.player = videojs(this.videoNode, this.props.options, function onPlayerReady() {
-        console.log('onPlayerReady', this);
-      });
+      this.player = videojs(this.videoNode, this.props.options);
+      // this can be used to initialize signals...
+      //  , function onPlayerReady() {
+      //  console.log('onPlayerReady', this);
+      //});
       this.player.qualityPickerPlugin();
       this.player.playlist(this.props.playlist);
       this.player.playlist.currentItem(this.props.playlistItem);
