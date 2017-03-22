@@ -4,12 +4,14 @@
 // module Videojs
 
 require('video.js');
+//require('videojs-errors');
 require('videojs-playlist');
 require('videojs-watermark');
 require('videojs-quality-picker');
 require('videojs5-hlsjs-source-handler');
 
 videojs.getComponent('Flash').prototype.play = function(){
+  this.trigger('waiting');
   this.el_.vjs_load();
   this.el_.vjs_play();
 };
@@ -34,6 +36,7 @@ exports.playerInit = function(playerElementId, options) {
   options.flash = {'swf': "//vjs.zencdn.net/swf/5.2.0/video-js.swf"};
   player = videojs(playerElementId, options);
   player.qualityPickerPlugin();
+  //player.errors();
   return player;
 };
 

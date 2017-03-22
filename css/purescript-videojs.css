@@ -19,3 +19,11 @@
    bottom:0;
    margin:auto;
 }
+
+.video-js.vjs-waiting button.vjs-big-play-button {
+  display: none;
+}
+
+.vjs-error-display {
+  display: none;
+}
