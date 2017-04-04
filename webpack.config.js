@@ -33,7 +33,7 @@ module.exports = function(env) {
   if(env.devel) {
       plugins.push(
         new webpack.DllReferencePlugin({
-            context: path.join(__dirname, "src"),
+            context: __dirname,
             manifest: require("./output/vendors.manifest.dll.json")
         })
       );
