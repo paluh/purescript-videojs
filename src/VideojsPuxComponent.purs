@@ -1,29 +1,28 @@
 module VideojsPuxComponent where
 
 import Prelude
-import Data.Nullable (toNullable)
-import Pux.Html (Html, Attribute)
-import Pux.Html.Attributes (attr)
-import Videojs (Index, Options, toNativeOptions, toNativePlaylist, toNativeWatermark)
+import Data.Nullable (Nullable, toNullable)
+import Pux.DOM.HTML (HTML)
+import Pux.Renderer.React (reactClassWithProps)
+import React (ReactClass)
+import Videojs (Index, Options, toNativeOptions, toNativePlaylist, toNativeWatermark, NativeWatermark, NativePlaylist, NativeOptions)
 
-foreign import videoPlayerComponentImpl
-  ∷ ∀ a.
-  Array (Attribute a) ->
-  Array (Html a) ->
-  Html a
+type VideojsProps =
+  { options ∷ NativeOptions
+  , playlist ∷ NativePlaylist
+  , playlistItem ∷ Int
+  , watermark ∷ Nullable NativeWatermark
+  }
 
-videojsComponent ∷ ∀ a. Options → Index → Html a
+foreign import videoPlayerComponentImpl ∷ ReactClass VideojsProps
+
+videojsComponent ∷ ∀ env. Options → Index → (HTML env → HTML env)
 videojsComponent options playlistIndex =
-  let
-    options' = toNativeOptions options
-    playlist = toNativePlaylist options.playlist
-    watermark = toNullable $ toNativeWatermark <$> options.watermark
-  in
+  reactClassWithProps
     videoPlayerComponentImpl
-      [ attr "options" options'
-      , attr "watermark" watermark
-      , attr "playlist" playlist
-      , attr "playlistItem" playlistIndex
-      ]
-      []
-
+    "videojs-component"
+    { options: toNativeOptions options
+    , playlist: toNativePlaylist options.playlist
+    , playlistItem: playlistIndex
+    , watermark: toNullable $ toNativeWatermark <$> options.watermark
+    }

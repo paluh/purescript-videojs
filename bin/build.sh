@@ -17,9 +17,12 @@ elif [ "$1" == "DLL" ]; then
   DEBUG=purs-loader webpack --config webpack.dll.js
 elif [ "$1" == "SNC" ]; then
   DEBUG=purs-loader webpack --env.production --env.snc --config webpack.config.js --progress
-else
+elif [ "$1" == "PROD" ]; then
   DEBUG=purs-loader webpack --env.production --env.simple --config webpack.config.js --optimize-minimize
   DEBUG=purs-loader webpack --env.production --env.pux --config webpack.config.js --optimize-minimize
+else
+    echo "You have to provide build target - one of: DEV, DLL, SNC, PROD.."
+    exit 1
 fi
 
 # purs-loader.bundle = false
