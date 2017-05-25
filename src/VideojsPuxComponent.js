@@ -14,8 +14,9 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var React = require('react');
-// just for reimport of video.js stuff and patching
-require('./Videojs');
+// XXX: this import was to initialize videojs
+//      but now we should pass videojs to constructor
+// require('./Videojs');
 
 var zip = function zip(a1, a2) {
   return a1.map(function (x, i) {
@@ -26,6 +27,7 @@ var zip = function zip(a1, a2) {
 var VideoPlayer = function (_React$Component) {
   _inherits(VideoPlayer, _React$Component);
 
+  // XXX: You have to initialize videojs before this
   function VideoPlayer(props) {
     _classCallCheck(this, VideoPlayer);
 
@@ -33,7 +35,7 @@ var VideoPlayer = function (_React$Component) {
   }
 
   _createClass(VideoPlayer, [{
-    key: 'componentWillReceiveProps',
+    key: "componentWillReceiveProps",
     value: function componentWillReceiveProps(nextProps) {
       if (this.props.playlist.length !== nextProps.playlist.lenght || this.props.playlist.poster !== nextProps.playlist.poster || !zip(this.props.playlist.sources, nextProps.playlist.sources).every(function (_ref) {
         var _ref2 = _slicedToArray(_ref, 2),
@@ -54,15 +56,15 @@ var VideoPlayer = function (_React$Component) {
       }
     }
   }, {
-    key: 'shouldComponentUpdate',
+    key: "shouldComponentUpdate",
     value: function shouldComponentUpdate() {
       return false;
     }
   }, {
-    key: 'componentDidMount',
+    key: "componentDidMount",
     value: function componentDidMount() {
       // instantiate video.js
-      this.player = videojs(this.videoNode, this.props.options);
+      this.player = this.props.videojs(this.videoNode, this.props.options);
       // this can be used to initialize signals...
       //  , function onPlayerReady() {
       //  console.log('onPlayerReady', this);
@@ -75,7 +77,7 @@ var VideoPlayer = function (_React$Component) {
     // destroy player on unmount
 
   }, {
-    key: 'componentWillUnmount',
+    key: "componentWillUnmount",
     value: function componentWillUnmount() {
       if (this.player) {
         this.player.dispose();
@@ -86,16 +88,16 @@ var VideoPlayer = function (_React$Component) {
     // see https://github.com/videojs/video.js/pull/3856
 
   }, {
-    key: 'render',
+    key: "render",
     value: function render() {
       var _this2 = this;
 
       return React.createElement(
-        'div',
-        { 'data-vjs-player': true },
-        React.createElement('video', { ref: function ref(node) {
+        "div",
+        { "data-vjs-player": true },
+        React.createElement("video", { ref: function ref(node) {
             return _this2.videoNode = node;
-          }, className: 'video-js' })
+          }, className: "video-js" })
       );
     }
   }]);

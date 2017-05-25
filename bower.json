@@ -1,23 +1,27 @@
 {
   "dependencies": {
-    "purescript-argonaut": "^2.0.0",
-    "purescript-console": "^2.0.0",
-    "purescript-dom": "^3.1.0",
-    "purescript-functions": "^2.0.0",
-    "purescript-generics": "^3.1.0",
-    "purescript-foreign-generic": "^3.0.0",
-    "purescript-newtype": "^1.2.0",
-    "purescript-nonempty": "^3.0.0",
-    "purescript-pux": "^8.9.0",
+    "purescript-argonaut": "^3.0.0",
+    "purescript-console": "^3.0.0",
+    "purescript-dom": "^4.3.1",
+    "purescript-eff": "^3.1.0",
+    "purescript-generics": "^4.0.0",
+    "purescript-generics-rep": "^5.0.0",
+    "purescript-newtype": "^2.0.0",
+    "purescript-nonempty": "^4.0.0",
+    "purescript-pux": "^9.2.0",
     "hls.js": "^0.7.4",
     "video.js": "^5.17",
     "videojs-playlist": "^3.0.0",
     "videojs-watermark": "https://github.com/paluh/videojs-watermark.git#master",
     "videojs-quality-picker": "https://github.com/paluh/videojs-quality-picker.git#master",
-    "videojs5-hlsjs-source-handler": "https://github.com/paluh/videojs5-hlsjs-source-handler.git#master"
+    "videojs5-hlsjs-source-handler": "https://github.com/paluh/videojs5-hlsjs-source-handler.git#master",
+
+    "videojs5-hlsjs-p2p-source-handler": "npm:streamroot-videojs5-hlsjs-p2p-source-handler#0.3.14",
+    "streamroot-hlsjs-p2p-bundle": "npm:streamroot-hlsjs-p2p-bundle#4.3.15"
   },
   "devDependencies": {
-    "purescript-psci-support": "^2.0.0"
+    "purescript-debug": "^3.0.0",
+    "purescript-psci-support": "^3.0.0"
   },
   "ignore": [
     "**/.*",

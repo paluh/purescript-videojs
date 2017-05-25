@@ -1,4 +1,4 @@
-module Simple where
+module StreamrootSimple where
 
 import Prelude
 import Control.Monad.Eff (Eff)
@@ -10,7 +10,7 @@ import Data.Either (Either(..))
 import Data.Maybe (Maybe(..))
 import Data.NonEmpty ((:|))
 import Videojs (Preload(..), Tech(..), VIDEOJS, WatermarkPosition(..))
-import Videojs.HlsjsSourceHandler (videojs)
+import Videojs.HlsjsP2pSourceHandler (StreamrootKey(..), videojs)
 
 run :: forall eff. String → Eff ( console :: CONSOLE, videojs :: VIDEOJS, dom :: DOM | eff ) Unit
 run elementId = do
@@ -18,7 +18,7 @@ run elementId = do
     videojs
       { autoPlay: true
       , controlBarVisibility: false
-      , debug: true
+      , debug: false
       , parentId: ElementId elementId
       , playlist:
           singleton
@@ -31,9 +31,10 @@ run elementId = do
               -- , rtmp: Just "rtmp://127.0.0.1:20222/live/test.stream?secure-end_time=1487858692.2&secure-hash=mFakhb2DOpQYXUr5lHWUK_72Dvev_yLEZ8R--q8DZFg="
               , mpegDash: (Nothing ∷ Maybe String)
               }
-            , poster: Just "./static/pimp.JPG"
+            , poster: Nothing -- Just "./static/pimp.JPG"
             }
-      , preload: Metadata
+      , preload: Auto
+      , streamrootKey: StreamrootKey "848ff51f-dc32-485b-8de5-cae9f215d4f7"
       , techOrder: Html5 :| [Flash]
       , watermark:
         Just

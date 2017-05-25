@@ -7,7 +7,6 @@ require('video.js');
 require('videojs-playlist');
 require('videojs-watermark');
 require('videojs-quality-picker');
-require('videojs5-hlsjs-source-handler');
 
 videojs.getComponent('Flash').prototype.play = function(){
   this.trigger('waiting');
@@ -20,17 +19,14 @@ videojs.getComponent('Flash').streamToParts = function(src) {
     connection: '',
     stream: ''
   }, rtmpParts;
-  if (!src) {
-    return parts;
-  }
+  if (!src) { return parts; }
   rtmpParts = /(rtmp.*live\/)(.*)/.exec(src);
   parts.connection = rtmpParts[1];
   parts.stream = rtmpParts[2];
   return parts;
 };
 
-
-exports.playerInit = function(playerElementId, options) {
+exports["videojsImpl'"] = function(playerElementId, options) {
   var player;
   player = videojs(playerElementId, options);
   player.qualityPickerPlugin();
@@ -38,10 +34,12 @@ exports.playerInit = function(playerElementId, options) {
 };
 
 exports.videojsImpl = function(left, right, playerElementId, options) {
+  console.log("Vidojs.js");
+  console.log(options);
   return function() {
     var result;
     try {
-      result = right(exports.playerInit(playerElementId, options));
+      result = right(exports["videojsImpl'"](playerElementId, options));
     } catch(err) {
       result = left("videojs error: \n" + err);
     }
@@ -61,6 +59,8 @@ exports.watermarkImpl = function(player, watermark) {
 
 exports.playlistImpl = function(player, playlist) {
   return function() {
+    console.log("Vidojs.js -> playlistImpl");
+    console.log(playlist);
     player.playlist(playlist);
   };
 };

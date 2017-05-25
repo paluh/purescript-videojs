@@ -1,9 +1,9 @@
 require('hls.js');
-require('video.js');
-require('videojs-playlist');
-require('videojs-watermark');
-require('videojs-quality-picker');
-require('videojs5-hlsjs-source-handler');
+//require('video.js');
+//require('videojs5-hlsjs-source-handler');
+//require('videojs-playlist');
+//require('videojs-watermark');
+//require('videojs-quality-picker');
 require('react');
 
 //require('Control.Alt');

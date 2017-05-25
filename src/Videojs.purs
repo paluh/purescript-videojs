@@ -2,7 +2,8 @@ module Videojs where
 
 import Prelude
 import DOM.HTML.Window as Window
-import Control.Monad.Eff (Eff)
+import Control.Monad.Eff (Eff, kind Effect)
+import Control.Monad.Eff.Exception (EXCEPTION)
 import DOM (DOM)
 import DOM.HTML (window)
 import DOM.HTML.Types (htmlDocumentToDocument)
@@ -19,23 +20,23 @@ import Data.Generic.Rep (class Generic)
 import Data.Generic.Rep.Show (genericShow)
 import Data.Maybe (Maybe(Just, Nothing))
 import Data.NonEmpty (NonEmpty)
-import Data.Nullable (toNullable, toMaybe, Nullable)
+import Data.Nullable (Nullable, toNullable)
 
 data Videojs
-foreign import data VIDEOJS :: !
+foreign import data VIDEOJS ∷ Effect
 
 -- `Auto` - player triggers preloading on browsers/devices which allow it
 -- `Metadata` - preload only metadata
 -- `None` - do not load anything
 data Preload = Auto | Metadata | None
-preloadToNative :: Preload -> String
+preloadToNative ∷ Preload -> String
 preloadToNative Auto = "auto"
 preloadToNative Metadata = "metadata"
 preloadToNative None = "none"
 
 data WatermarkPosition = TopLeft | TopRight | BottomRight | BottomLeft
 derive instance genericWatermarkPosition ∷ Generic WatermarkPosition _
-instance decodeJsonWatermarkPosition :: DecodeJson (WatermarkPosition) where
+instance decodeJsonWatermarkPosition ∷ DecodeJson (WatermarkPosition) where
   decodeJson json =
     decodeJson json >>= decode
    where
@@ -44,19 +45,19 @@ instance decodeJsonWatermarkPosition :: DecodeJson (WatermarkPosition) where
     decode "bottom-right" = Right BottomRight
     decode "bottom-left" = Right BottomLeft
     decode _ = Left "Incorrect watermark position value"
-instance showWatermarkPosition :: Show WatermarkPosition where
+instance showWatermarkPosition ∷ Show WatermarkPosition where
   show = genericShow
 
 type Watermark =
-  { url :: String
-  , position :: WatermarkPosition
-  , fadeOut :: Maybe Int
+  { url ∷ String
+  , position ∷ WatermarkPosition
+  , fadeOut ∷ Maybe Int
   }
 
 type ParentId = ElementId
 type PlayerId = ElementId
 
-runElementId :: ElementId -> String
+runElementId ∷ ElementId -> String
 runElementId (ElementId eId) = eId
 
 type Sources =
@@ -75,98 +76,111 @@ type PlaylistBase sources poster = Array (PlaylistItemBase sources poster)
 type Playlist = PlaylistBase Sources (Maybe String)
 
 type NativePlaylist =
-  PlaylistBase (Array { type :: String, src :: String }) (Nullable String)
+  PlaylistBase (Array { type ∷ String, src ∷ String }) (Nullable String)
 
 data Tech = Flash | Html5
 
-techToNative :: Tech -> String
+techToNative ∷ Tech -> String
 techToNative Flash = "flash"
 techToNative Html5 = "html5"
 
-type Options =
-  { autoPlay :: Boolean
-  , parentId :: ParentId
-  , controlBarVisibility :: Boolean
-  -- , aspectRatio :: AspectRatio
-  , debug :: Boolean
-  , playlist :: Playlist
-  , preload :: Preload
-  , techOrder :: NonEmpty Array Tech
-  , watermark :: Maybe Watermark
-  -- , width :: Maybe Width
-  }
+type OptionsBase extra =
+  Record
+    ( autoPlay ∷ Boolean
+    , parentId ∷ ParentId
+    , controlBarVisibility ∷ Boolean
+    -- , aspectRatio ∷ AspectRatio
+    , debug ∷ Boolean
+    , playlist ∷ Playlist
+    , preload ∷ Preload
+    , techOrder ∷ NonEmpty Array Tech
+    , watermark ∷ Maybe Watermark
+    -- , width ∷ Maybe Width
+    | extra
+    )
+type Options = OptionsBase ()
 
 type NativeWatermark =
-  { image :: String
-  , fadeOut :: Maybe Int
-  , position :: String
+  { image ∷ String
+  , fadeOut ∷ Maybe Int
+  , position ∷ String
   }
 
-type HlsjsConfig =
-  { debug :: Boolean }
+type NativeOptionsBase extra =
+  Record
+    ( autoplay ∷ Boolean
+    , controls ∷ Boolean
+    , preload ∷ String
+    , flash ∷ { swf ∷ String }
+    , fluid ∷ Boolean
+    -- , html5 ∷  html5
+    , techOrder ∷ Array String
+    | extra
+    )
 
-type NativeOptions =
-  { autoplay :: Boolean
-  , controls :: Boolean
-  , preload :: String
-  , flash ∷ { swf ∷ String }
-  , fluid ∷ Boolean
-  , html5 :: { hlsjsConfig :: HlsjsConfig }
-  , techOrder :: Array String
-  }
+type NativeOptions = NativeOptionsBase ()
+foreign import videojsImpl' ∷ ∀ eff. Fn2 String NativeOptions (Eff (exception ∷ EXCEPTION, videojs ∷ VIDEOJS, dom ∷ DOM | eff) Videojs)
 
-foreign import videojsImpl ::
+-- videojs without hlsjs source handler
+-- if you want to build bundle with hlsjs use
+-- Videojs/HlsjsSourceHandler or
+-- Videojs/HlsjsP2pSourceHandler
+foreign import videojsImpl ∷
   forall a b eff.
-    Fn4 (a -> Either a b) (b -> Either a b) String NativeOptions (Eff (videojs :: VIDEOJS, dom :: DOM | eff) (Either String Videojs))
+    Fn4 (a -> Either a b) (b -> Either a b) String NativeOptions (Eff (videojs ∷ VIDEOJS, dom ∷ DOM | eff) (Either String Videojs))
 
-foreign import playlistImpl ::
+foreign import playlistImpl ∷
   forall eff.
-    Fn2 Videojs NativePlaylist (Eff (videojs :: VIDEOJS, dom :: DOM | eff) Unit)
-playlist :: forall eff. Videojs -> NativePlaylist -> Eff (videojs :: VIDEOJS, dom :: DOM | eff) Unit
+    Fn2 Videojs NativePlaylist (Eff (videojs ∷ VIDEOJS, dom ∷ DOM | eff) Unit)
+playlist ∷ forall eff. Videojs -> NativePlaylist -> Eff (videojs ∷ VIDEOJS, dom ∷ DOM | eff) Unit
 playlist = runFn2 playlistImpl
 
-foreign import watermarkImpl ::
+foreign import watermarkImpl ∷
   forall eff.
-    Fn2 Videojs (Nullable NativeWatermark) (Eff (videojs :: VIDEOJS, dom :: DOM | eff) Unit)
+    Fn2 Videojs (Nullable NativeWatermark) (Eff (videojs ∷ VIDEOJS, dom ∷ DOM | eff) Unit)
 watermark ∷
   ∀ eff. Videojs →
   Nullable NativeWatermark →
-  Eff (videojs :: VIDEOJS, dom :: DOM | eff) Unit
+  Eff (videojs ∷ VIDEOJS, dom ∷ DOM | eff) Unit
 watermark = runFn2 watermarkImpl
 
 type Index = Int
 
-foreign import playlistItemImpl ::
+foreign import playlistItemImpl ∷
   forall eff.
-    Fn2 Videojs Index (Eff (dom :: DOM, videojs :: VIDEOJS | eff) Index)
-playlistItem :: forall e. Videojs -> Index -> Eff (dom :: DOM, videojs :: VIDEOJS | e) Index
+    Fn2 Videojs Index (Eff (dom ∷ DOM, videojs ∷ VIDEOJS | eff) Index)
+playlistItem ∷ forall e. Videojs -> Index -> Eff (dom ∷ DOM, videojs ∷ VIDEOJS | e) Index
 playlistItem v index = runFn2 playlistItemImpl v index
 
-createVideoElement ::
+createVideoElement ∷
   forall eff.
     Document ->
     PlayerId  ->
-    Eff (dom :: DOM | eff) Element
+    Eff (dom ∷ DOM | eff) Element
 createVideoElement document playerId = do
   videoElement <- createElement "video" document
   setId playerId videoElement
   setAttribute "class" "video-js vjs-default-skin vjs-fluid vjs-16-9" videoElement
   pure videoElement
 
-videojs :: ∀ eff. Options → Eff (dom :: DOM, videojs :: VIDEOJS | eff) (Either String Videojs)
-videojs options = do
+videojsBase ∷
+  ∀ eff e.
+    (String → OptionsBase e → Eff (dom ∷ DOM, videojs ∷ VIDEOJS | eff) (Either String Videojs)) →
+    OptionsBase e →
+    Eff (dom ∷ DOM, videojs ∷ VIDEOJS | eff) (Either String Videojs)
+videojsBase vjs options = do
   document <- window >>= ((htmlDocumentToDocument <$> _) <<< Window.document)
   let
     rawParentId = runElementId options.parentId
     rawPlayerId = rawParentId <> "-video"
     playerId = ElementId rawPlayerId
   videoElement <- createVideoElement document playerId
-  maybeParentElement <- toMaybe <$> getElementById options.parentId (documentToNonElementParentNode document)
+  maybeParentElement <- getElementById options.parentId (documentToNonElementParentNode document)
   case maybeParentElement of
     Nothing -> pure <<< Left $ "Parent element not found: " <> rawParentId
     Just parentElement -> do
-      appendChild (elementToNode videoElement) (elementToNode parentElement)
-      result <- runFn4 videojsImpl Left Right rawPlayerId (toNativeOptions options)
+      void $ appendChild (elementToNode videoElement) (elementToNode parentElement)
+      result <- vjs rawPlayerId options
       case result of
         Right v -> do
           (playlist v (toNativePlaylist options.playlist))
@@ -174,13 +188,15 @@ videojs options = do
           pure result
         err -> pure result
 
-toNativeOptions ∷ Options → NativeOptions
+videojs :: ∀ e eff. OptionsBase e → Eff ( dom ∷ DOM , videojs ∷ VIDEOJS | eff ) (Either String Videojs)
+videojs = videojsBase $ \e o → (runFn4 videojsImpl Left Right e (toNativeOptions o))
+
+toNativeOptions ∷ ∀ e. (OptionsBase e) → NativeOptions
 toNativeOptions options =
   { autoplay: options.autoPlay
   , controls: options.controlBarVisibility
   , flash: {swf: "//vjs.zencdn.net/swf/5.2.0/video-js.swf"}
   , fluid: true
-  , html5: { hlsjsConfig: { debug: options.debug } }
   , preload: preloadToNative options.preload
   , techOrder: fromFoldable <<< map techToNative $ options.techOrder
   }
@@ -194,10 +210,10 @@ toNativePlaylist =
       [ {src: _, type: "rtmp/mp4"} <$> sources.rtmp
       , {src: _, type: "application/x-mpegurl"} <$> sources.hls
       , {src: _, type: "application/dash+xml"} <$> sources.mpegDash
-      ]) :: Array { src:: String, type:: String })
+      ]) ∷ Array { src ∷ String, type ∷ String })
   toPlaylistItem { poster, sources } = { poster: toNullable poster, sources: fromSources sources }
 
-toNativeWatermark :: Watermark -> NativeWatermark
+toNativeWatermark ∷ Watermark -> NativeWatermark
 toNativeWatermark { fadeOut, url, position }  =
   { fadeOut, position: serPosition position, image: url }
  where
@@ -205,4 +221,3 @@ toNativeWatermark { fadeOut, url, position }  =
   serPosition TopLeft = "top-left"
   serPosition BottomLeft = "bottom-left"
   serPosition BottomRight = "bottom-right"
-

@@ -4,12 +4,14 @@
 // module VideojsPuxComponent
 
 const React = require('react');
-// just for reimport of video.js stuff and patching
-require('./Videojs');
+// XXX: this import was to initialize videojs
+//      but now we should pass videojs to constructor
+// require('./Videojs');
 
 let zip = (a1, a2) => a1.map((x, i) => [x, a2[i]]);
 
 class VideoPlayer extends React.Component {
+  // XXX: You have to initialize videojs before this
   constructor(props) {
     super(props);
   }
@@ -33,7 +35,7 @@ class VideoPlayer extends React.Component {
   }
   componentDidMount() {
     // instantiate video.js
-    this.player = videojs(this.videoNode, this.props.options);
+    this.player = this.props.videojs(this.videoNode, this.props.options);
     // this can be used to initialize signals...
     //  , function onPlayerReady() {
     //  console.log('onPlayerReady', this);

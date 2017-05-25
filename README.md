@@ -1,3 +1,17 @@
+I. Compilation
+
+  * install `bower-npm-resolver` and `global` (just use `npm install`)
+
+  * in `bower_components/videojs-playlsit/bower.json` change `"main": "src/js/index.js"`,
+
+  * in `bower_components/videojs5-hlsjs-p2p-source-handler/bower.json` change `"main": "./lib/main.js"`,
+
+  * be careful to not compile hls.js second time with babel!
+
+
+This comments are related for sure to purescript < 0.11.0:
+
+
 I. Installation
 
     I was able to use purescript-videojs with minimal overhead:
@@ -37,10 +51,6 @@ III. Here you have old HOWTO
   * install global (fuck it)!:
 
       npm install global
-
-  * copy webpack settings:
-
-    - be careful to not compile hls.js second time with babel!
 
 
 

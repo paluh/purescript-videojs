@@ -11,23 +11,42 @@ module.exports = function(env) {
       libraryTarget = 'var',
       library = '[name]',
       externals = {},
+      targetsCount = 0,
       bowerWebpackPlugin = new BowerWebpackPlugin({moduleDirectories: ['./bower_components']});
 
   if(env.simple) {
+    targetsCount++;
     entries.simple = './examples/Simple';
     pscBundleArgs = {'module': 'Simple'};
   }
+  if(env.streamrootSimple) {
+    targetsCount++;
+    entries.streamrootSimple = './examples/StreamrootSimple';
+    pscBundleArgs = {'module': 'StreamrootSimple'};
+  }
   if(env.pux) {
+    targetsCount++;
     entries.pux = './examples/PuxComponentSimple';
     pscBundleArgs = {'module': 'PuxComponentSimple'};
   }
-  if(env.simple && env.pux) {
+  if(env.streamrootPux) {
+    targetsCount++;
+    entries.streamrootPux = './examples/StreamrootPuxComponent';
+    pscBundleArgs = {'module': 'StreamrootPuxComponent'};
+  }
+  if(targetsCount > 1) {
     pscBundleArgs = {};
   }
 
   var plugins = [
       bowerWebpackPlugin,
-      new webpack.ProvidePlugin({'window.videojs': 'video.js', 'videojs': 'video.js'})
+      new webpack.ProvidePlugin({
+        'window.videojs': 'video.js',
+        "window['videojs']": 'video.js',
+        'global.videojs': 'video.js',
+        "global['videojs']": 'video.js',
+        'videojs': 'video.js'
+      })
   ];
 
   if(env.devel) {
@@ -50,7 +69,7 @@ module.exports = function(env) {
 
   var r = {
     entry: entries,
-      devtool: env.devel?'eval':'cheap-module-source-map',
+      devtool: 'source-map', //env.devel?'eval':'cheap-module-source-map',
       cache: true,
       devServer:
         { contentBase: '.',
@@ -77,13 +96,13 @@ module.exports = function(env) {
                        psc: 'psa',
                        pscIde: true,
                        pscIdeArgs: {'port': 4088},
-                       pscArgs: env.devel?{'no-opts': true}:{'no-prefix': true},
+                       pscArgs: env.devel?{}:{'no-prefix': true},
                        watch: env.devel
                      }
             }, {
               test: /\.js$/,
               loader: 'babel-loader',
-              exclude: [/hls.js/],
+              exclude: [/hls.js/, /streamroot-hlsjs-p2p-bundle/],
               query: { cacheDirectory: true }
             }, {
               test: /\.swf$/,
@@ -97,7 +116,8 @@ module.exports = function(env) {
             }, {
               test: /\.scss$/,
               loader: "style-loader!css-loader!sass-loader"
-            }]
+            }
+        ]
       },
       externals: externals,
       resolve: {
@@ -110,7 +130,7 @@ module.exports = function(env) {
         extensions: [ '.purs', '.js'],
         descriptionFiles: ['bower.json', 'package.json'],
         mainFields: ['main', 'browser']
-      }
+      },
 
 
       //resolve:

@@ -1,4 +1,4 @@
-module PuxComponentSimple where
+module StreamrootPuxComponent where
 
 import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Exception (EXCEPTION)
@@ -13,8 +13,8 @@ import Pux.Renderer.React (renderToDOM)
 import Signal.Channel (CHANNEL)
 import Text.Smolder.HTML (div)
 import Text.Smolder.Markup (text)
-import Videojs.HlsjsSourceHandler (Options, toNativeOptions, videojsImpl')
 import Videojs (Playlist, Preload(Metadata), Tech(Html5, Flash), Watermark, WatermarkPosition(TopLeft))
+import Videojs.HlsjsP2pSourceHandler (Options, StreamrootKey(..), toNativeOptions, videojsImpl')
 import VideojsPuxComponent (videojsComponent)
 import Prelude hiding (div)
 
@@ -38,6 +38,7 @@ options =
   , playlist: playlist
   , preload: Metadata
   , techOrder: Flash :| [Html5]
+  , streamrootKey: StreamrootKey "848ff51f-dc32-485b-8de5-cae9f215d4f7"
   , watermark
   }
 

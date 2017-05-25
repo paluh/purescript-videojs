@@ -11,7 +11,20 @@ fi
 
 if [ "$1" == "DEV" ];
 then
-  DEBUG=purs-loader webpack --env.pux --env.simple --env.devel --watch --config webpack.config.js --progress
+  if [ "$2" == "SIMPLE" ]; then
+    DEBUG=purs-loader webpack --env.simple --env.devel --watch --config webpack.config.js --progress
+  elif [ "$2" == "STREAMROOT_SIMPLE" ]; then
+    DEBUG=purs-loader webpack --env.streamrootSimple --env.devel --watch --config webpack.config.js --progress
+  elif [ "$2" == "PUX" ]; then
+    DEBUG=purs-loader webpack --env.pux --env.devel --watch --config webpack.config.js --progress
+  elif [ "$2" == "STREAMROOT_PUX" ]; then
+    DEBUG=purs-loader webpack --env.streamrootPux --env.devel --watch --config webpack.config.js --progress
+  else
+    echo "Building all scripts - if you want to build single module use one of options: SIMPE, STREAMROOT_SIMPLE, PUX, STREAMROOT_PUX"
+    DEBUG=purs-loader webpack --env.streamrootPux --env.streamrootSimple --env.pux --env.simple --env.devel --watch --config webpack.config.js --progress
+
+  fi
+
 elif [ "$1" == "DLL" ]; then
   # pulp build
   DEBUG=purs-loader webpack --config webpack.dll.js
