@@ -10,7 +10,7 @@ import Data.Function.Uncurried (Fn2, Fn4, runFn4)
 import Data.Generic.Rep (class Generic)
 import Data.Generic.Rep.Show (genericShow)
 import Data.Newtype (class Newtype, unwrap)
-import Util (merge)
+import Videojs.Util (merge)
 import Videojs (VIDEOJS, Videojs)
 
 foreign import data HLSJS ∷ Effect

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-babel ./src/VideojsPuxComponent.jsx > src/VideojsPuxComponent.js
+babel ./src/Videojs/PuxComponent.jsx > src/Videojs/PuxComponent.js
 if [ "$1" == "DEV" ]; then
   echo "Building webpack development builder..."
 elif [ "$1" == "DLL" ]; then
@@ -52,7 +52,10 @@ else
 fi
 
 
+# 2017.05.31
 
+
+# before 2017.05.31
 
 # purs-loader.bundle = false
 #     pux.bundle.js   1.3 MB       0  [emitted]  [big]  pux

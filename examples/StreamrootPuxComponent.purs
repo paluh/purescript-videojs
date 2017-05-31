@@ -15,7 +15,7 @@ import Text.Smolder.HTML (div)
 import Text.Smolder.Markup (text)
 import Videojs (Playlist, Preload(Metadata), Tech(Html5, Flash), Watermark, WatermarkPosition(TopLeft))
 import Videojs.HlsjsP2pSourceHandler (Options, StreamrootKey(..), toNativeOptions, videojsImpl')
-import VideojsPuxComponent (videojsComponent)
+import Videojs.PuxComponent (videojsComponent)
 import Prelude hiding (div)
 
 playlist :: Playlist

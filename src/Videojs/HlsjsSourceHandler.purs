@@ -6,7 +6,7 @@ import Control.Monad.Eff.Exception (EXCEPTION)
 import DOM (DOM)
 import Data.Either (Either(..))
 import Data.Function.Uncurried (Fn2, Fn4, runFn4)
-import Util (merge)
+import Videojs.Util (merge)
 import Videojs (VIDEOJS, Videojs)
 
 foreign import data HLSJS ∷ Effect

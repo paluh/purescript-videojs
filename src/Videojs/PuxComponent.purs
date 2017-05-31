@@ -1,4 +1,4 @@
-module VideojsPuxComponent where
+module Videojs.PuxComponent where
 
 import Prelude
 import Control.Monad.Eff (Eff)

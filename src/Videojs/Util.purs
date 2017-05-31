@@ -1,4 +1,4 @@
-module Util where
+module Videojs.Util where
 
 foreign import merge
   :: forall r1 r2 r3
