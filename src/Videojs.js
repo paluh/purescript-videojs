@@ -28,14 +28,12 @@ videojs.getComponent('Flash').streamToParts = function(src) {
 
 exports["videojsImpl'"] = function(playerElementId, options) {
   var player;
-  player = videojs(playerElementId, options);
+  player = window.videojs(playerElementId, options);
   player.qualityPickerPlugin();
   return player;
 };
 
 exports.videojsImpl = function(left, right, playerElementId, options) {
-  console.log("Vidojs.js");
-  console.log(options);
   return function() {
     var result;
     try {
@@ -59,8 +57,6 @@ exports.watermarkImpl = function(player, watermark) {
 
 exports.playlistImpl = function(player, playlist) {
   return function() {
-    console.log("Vidojs.js -> playlistImpl");
-    console.log(playlist);
     player.playlist(playlist);
   };
 };

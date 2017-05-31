@@ -26,8 +26,8 @@ module.exports = function(env) {
   }
   if(env.pux) {
     targetsCount++;
-    entries.pux = './examples/PuxComponentSimple';
-    pscBundleArgs = {'module': 'PuxComponentSimple'};
+    entries.pux = './examples/PuxComponent';
+    pscBundleArgs = {'module': 'PuxComponent'};
   }
   if(env.streamrootPux) {
     targetsCount++;
@@ -35,7 +35,10 @@ module.exports = function(env) {
     pscBundleArgs = {'module': 'StreamrootPuxComponent'};
   }
   if(targetsCount > 1) {
-    pscBundleArgs = {};
+    throw {'message': 'Builing more then one target can lead to strange bundle generation!'};
+  }
+  if(targetsCount === 0) {
+    throw {'message': 'You have to specify at exactly one target: env.simple, env.streamrootSimple, env.pux, env.streamrootPux!'};
   }
 
   var plugins = [
@@ -69,7 +72,7 @@ module.exports = function(env) {
 
   var r = {
     entry: entries,
-      devtool: 'source-map', //env.devel?'eval':'cheap-module-source-map',
+      devtool: env.devel?'eval':'cheap-module-source-map',
       cache: true,
       devServer:
         { contentBase: '.',
@@ -90,7 +93,7 @@ module.exports = function(env) {
            test: /\.purs$/,
               loader: "purs-loader",
               query: { src: [ 'bower_components/purescript-*/src/**/*.purs', 'src/**/*.purs', 'examples/**/*.purs'  ],
-                       bundle: !env.devel,
+                       bundle: !env.devel && env.pursBundle,
                        bundleArgs: pscBundleArgs,
                        output: './output',
                        psc: 'psa',
@@ -138,6 +141,7 @@ module.exports = function(env) {
       //    extensions: [ '', '.purs', '.js']
       //  }
     };
+    console.log("Purs bundle: " + (!env.devel && env.pursBundle));
     console.log(r);
     return r;
 };

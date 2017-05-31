@@ -1,4 +1,4 @@
-module PuxComponentSimple where
+module PuxComponent where
 
 import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Exception (EXCEPTION)

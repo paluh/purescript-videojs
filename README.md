@@ -2,55 +2,49 @@ I. Compilation
 
   * install `bower-npm-resolver` and `global` (just use `npm install`)
 
+  * create ~/.bowerrc:
+
+    {
+      "resolvers": [
+        "bower-npm-resolver"
+      ]
+    }
+
   * in `bower_components/videojs-playlsit/bower.json` change `"main": "src/js/index.js"`,
 
   * in `bower_components/videojs5-hlsjs-p2p-source-handler/bower.json` change `"main": "./lib/main.js"`,
 
-  * be careful to not compile hls.js second time with babel!
+  * be careful to not compile hls.js second time with babel - use:
+
+  { test: /\.js$/,
+    exclude: [/hls.js/, /streamroot-hlsjs-p2p-bundle/],
+    ..
+  }
 
 
-This comments are related for sure to purescript < 0.11.0:
+II. Issues
+
+  * You can't mix two bundles with different strategies on one page as streamroot provider will be placed in both
 
 
-I. Installation
-
-    I was able to use purescript-videojs with minimal overhead:
-
-    * copied webpack.config.json
-
-    * copied .babelrc
-
-    * added this line to app.js:
-
-        require('purescript-videojs');
-
-    * I still don't know if all plugins are working correctly (for example videojs-playlist)
-
-II. To run pux related builds/examples you have to:
-
-  npm install react@15.4.2 react-dom@15.4.2
-
-III. Here you have old HOWTO
+  * You can't use two streamroot bundle on single page!
 
 
-  There are some compilation issues:
 
-  * change `bower_components/bower.json`:
+III. Installation as dependency
 
-      "main": [
-        "dist/alt/video.novtt.js",
-        "dist/video-js.css"
-      ]
+  I was able to use purescript-videojs with minimal overhead:
 
-  * change `bower_components/videojs-playlist/bower.json`
+  * copied webpack.config.json
 
-      "main": [
-        `dist/src/playlist.min.js`,
-      ]
+  * copied .babelrc
 
-  * install global (fuck it)!:
+  * added this line to app.js:
 
-      npm install global
+      require('purescript-videojs');
+
+  * I still don't know if all plugins are working correctly (for example videojs-playlist)
 
 
+  * npm install react@15.4.2 react-dom@15.4.2
 

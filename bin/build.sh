@@ -31,12 +31,28 @@ elif [ "$1" == "DLL" ]; then
 elif [ "$1" == "SNC" ]; then
   DEBUG=purs-loader webpack --env.production --env.snc --config webpack.config.js --progress
 elif [ "$1" == "PROD" ]; then
-  DEBUG=purs-loader webpack --env.production --env.simple --config webpack.config.js --optimize-minimize
-  DEBUG=purs-loader webpack --env.production --env.pux --config webpack.config.js --optimize-minimize
+  # no "devel" setup so we are not using
+  if [ "$2" == "PURS_BUNDLE" ];
+  then
+      PURS_BUNDLE="--env.pursBundle"
+  elif [ "$2" != "" ];
+  then
+      echo "You can only pass PURS_BUNDLE as second argument to PROD"
+      exit 1
+  else
+      PURS_BUNDLE=""
+  fi
+  DEBUG=purs-loader webpack --env.production $PURS_BUNDLE --env.simple --config webpack.config.js --optimize-minimize
+  DEBUG=purs-loader webpack --env.production $PURS_BUNDLE --env.pux --config webpack.config.js --optimize-minimize
+  DEBUG=purs-loader webpack --env.production $PURS_BUNDLE --env.streamrootSimple --config webpack.config.js --optimize-minimize
+  DEBUG=purs-loader webpack --env.production $PURS_BUNDLE --env.streamrootPux --config webpack.config.js --optimize-minimize
 else
     echo "You have to provide build target - one of: DEV, DLL, SNC, PROD.."
     exit 1
 fi
+
+
+
 
 # purs-loader.bundle = false
 #     pux.bundle.js   1.3 MB       0  [emitted]  [big]  pux
