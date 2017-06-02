@@ -1,5 +1,6 @@
 I. Compilation
 
+
   * install `bower-npm-resolver` and `global` (just use `npm install`)
 
   * create ~/.bowerrc:
@@ -10,7 +11,7 @@ I. Compilation
       ]
     }
 
-  * in `bower_components/videojs-playlsit/bower.json` change `"main": "src/js/index.js"`,
+  * in `bower_components/videojs-playlist/bower.json` change `"main": "src/js/index.js"`,
 
   * in `bower_components/videojs5-hlsjs-p2p-source-handler/bower.json` change `"main": "./lib/main.js"`,
 
@@ -23,6 +24,10 @@ I. Compilation
 
 
 II. Issues
+
+  * it is REALLY IMPORTANT to only import and use appropriate version of videojs hlsjs source handler in your purescript code. If you use both versions in code they will be used in bundle...
+
+  * remove videojs-hlsjs-source-handler and videojs5-hlsjs-p2p-source-handler from dev dll build (vendors.js)
 
   * You can't mix two bundles with different strategies on one page as streamroot provider will be placed in both
 

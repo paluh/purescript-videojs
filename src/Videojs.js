@@ -35,9 +35,11 @@ exports["videojsImpl'"] = function(playerElementId, options) {
 
 exports.videojsImpl = function(left, right, playerElementId, options) {
   return function() {
-    var result;
+    var result, player;
     try {
-      result = right(exports["videojsImpl'"](playerElementId, options));
+      player = window.videojs(playerElementId, options);
+      player.qualityPickerPlugin();
+      result = right(player);
     } catch(err) {
       result = left("videojs error: \n" + err);
     }

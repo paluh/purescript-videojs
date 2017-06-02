@@ -40,7 +40,7 @@ module.exports = function() { // you can accept here 'env' argument
           }, {
             test: /\.js$/,
             loader: 'babel-loader',
-            exclude: [/hls.js/],
+            exclude: [/hls.js/, /streamroot-hlsjs-p2p-bundle/],
             query: { cacheDirectory: true }
           }, {
             test: /\.swf$/,

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-babel ./src/Videojs/PuxComponent.jsx > src/Videojs/PuxComponent.js
+babel ./src/Videojs/PuxComponent.jsx > src/VideojsPuxComponent.js
 if [ "$1" == "DEV" ]; then
   echo "Building webpack development builder..."
 elif [ "$1" == "DLL" ]; then

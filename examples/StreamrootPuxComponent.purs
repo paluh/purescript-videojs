@@ -37,7 +37,7 @@ options =
   , parentId: ElementId "unused"
   , playlist: playlist
   , preload: Metadata
-  , techOrder: Flash :| [Html5]
+  , techOrder: Html5 :| [Flash]
   , streamrootKey: StreamrootKey "848ff51f-dc32-485b-8de5-cae9f215d4f7"
   , watermark
   }
