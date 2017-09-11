@@ -7,6 +7,8 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -24,6 +26,33 @@ var zip = function zip(a1, a2) {
   });
 };
 
+var shallowEqual = function shallowEqual(objA, objB) {
+  if (objA === objB) {
+    return true;
+  }
+
+  if ((typeof objA === 'undefined' ? 'undefined' : _typeof(objA)) !== 'object' || objA === null || (typeof objB === 'undefined' ? 'undefined' : _typeof(objB)) !== 'object' || objB === null) {
+    return false;
+  }
+
+  var keysA = Object.keys(objA);
+  var keysB = Object.keys(objB);
+
+  if (keysA.length !== keysB.length) {
+    return false;
+  }
+
+  // Test for A's keys different from B.
+  var bHasOwnProperty = Object.prototype.hasOwnProperty.bind(objB);
+  for (var i = 0; i < keysA.length; i++) {
+    if (!bHasOwnProperty(keysA[i]) || objA[keysA[i]] !== objB[keysA[i]]) {
+      return false;
+    }
+  }
+
+  return true;
+};
+
 var VideoPlayer = function (_React$Component) {
   _inherits(VideoPlayer, _React$Component);
 
@@ -35,7 +64,7 @@ var VideoPlayer = function (_React$Component) {
   }
 
   _createClass(VideoPlayer, [{
-    key: "componentWillReceiveProps",
+    key: 'componentWillReceiveProps',
     value: function componentWillReceiveProps(nextProps) {
       if (this.props.playlist.length !== nextProps.playlist.lenght || this.props.playlist.poster !== nextProps.playlist.poster || !zip(this.props.playlist.sources, nextProps.playlist.sources).every(function (_ref) {
         var _ref2 = _slicedToArray(_ref, 2),
@@ -56,12 +85,12 @@ var VideoPlayer = function (_React$Component) {
       }
     }
   }, {
-    key: "shouldComponentUpdate",
+    key: 'shouldComponentUpdate',
     value: function shouldComponentUpdate() {
       return false;
     }
   }, {
-    key: "componentDidMount",
+    key: 'componentDidMount',
     value: function componentDidMount() {
       // instantiate video.js
       this.player = this.props.videojs(this.videoNode, this.props.options);
@@ -77,7 +106,7 @@ var VideoPlayer = function (_React$Component) {
     // destroy player on unmount
 
   }, {
-    key: "componentWillUnmount",
+    key: 'componentWillUnmount',
     value: function componentWillUnmount() {
       if (this.player) {
         this.player.dispose();
@@ -88,16 +117,16 @@ var VideoPlayer = function (_React$Component) {
     // see https://github.com/videojs/video.js/pull/3856
 
   }, {
-    key: "render",
+    key: 'render',
     value: function render() {
       var _this2 = this;
 
       return React.createElement(
-        "div",
-        { "data-vjs-player": true },
-        React.createElement("video", { ref: function ref(node) {
+        'div',
+        { 'data-vjs-player': true },
+        React.createElement('video', { ref: function ref(node) {
             return _this2.videoNode = node;
-          }, className: "video-js" })
+          }, className: 'video-js' })
       );
     }
   }]);

@@ -34,6 +34,7 @@ options =
   { autoPlay: true
   , controlBarVisibility: true
   , debug: true
+  , mobileBrowserEnabled: true
   , parentId: ElementId "unused"
   , playlist: playlist
   , preload: Metadata

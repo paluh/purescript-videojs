@@ -31,7 +31,6 @@ II. Issues
 
   * You can't mix two bundles with different strategies on one page as streamroot provider will be placed in both
 
-
   * You can't use two streamroot bundle on single page!
 
 

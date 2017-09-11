@@ -21,10 +21,17 @@ derive instance genericStreamrootKey ∷ Generic StreamrootKey _
 instance showStreamrootKey ∷ Show StreamrootKey where
   show = genericShow
 
-type Options = Videojs.OptionsBase (streamrootKey ∷ StreamrootKey)
+type Options =
+  Videojs.OptionsBase
+    ( streamrootKey ∷ StreamrootKey
+    , mobileBrowserEnabled ∷ Boolean
+    )
 
 type HlsjsConfig = { debug ∷ Boolean }
-type P2pConfig = { streamrootKey ∷ String }
+type P2pConfig =
+  { streamrootKey ∷ String
+  , mobileBrowserEnabled ∷ Boolean
+  }
 type Html5 = { hlsjsConfig ∷ HlsjsConfig, p2pConfig ∷ P2pConfig }
 type NativeOptions = Videojs.NativeOptionsBase (html5 ∷ Html5)
 
@@ -52,5 +59,7 @@ toNativeOptions options =
     { hlsjsConfig:
         { debug: options.debug }
     , p2pConfig:
-        { streamrootKey: unwrap options.streamrootKey }
+        { streamrootKey: unwrap options.streamrootKey
+        , mobileBrowserEnabled: options.mobileBrowserEnabled
+        }
     }
