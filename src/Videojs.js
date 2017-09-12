@@ -19,10 +19,16 @@ videojs.getComponent('Flash').streamToParts = function(src) {
     connection: '',
     stream: ''
   }, rtmpParts;
+  console.log("stream to parts");
+  console.log(src);
   if (!src) { return parts; }
   rtmpParts = /(rtmp.*live\/)(.*)/.exec(src);
-  parts.connection = rtmpParts[1];
-  parts.stream = rtmpParts[2];
+  if(rtmpParts) {
+    parts.connection = rtmpParts[1];
+    parts.stream = rtmpParts[2];
+  } else {
+    throw "Videojs.streamToParts: url doesn't match hardcoded pattern rtmp://.*/live/";
+  };
   return parts;
 };
 

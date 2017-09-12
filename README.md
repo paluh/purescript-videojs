@@ -1,5 +1,19 @@
 I. Compilation
 
+  * there is something wrong with "pux/.babelrc" which causes problems with module-loader - investigate further
+
+  * in `bower_components/videojs-playlist/bower.json` change `"main": "src/js/index.js"`,
+
+  * in `bower_components/videojs5-hlsjs-p2p-source-handler/bower.json` change
+
+    from "main": "./dist/videojs5-hlsjs-p2p-source-handler.js"
+
+    to "main": "./videojs5-hlsjs-p2p-source-handler.js",
+
+
+  * If you get sass related error (not for linux platform etc.) run:
+
+    $ npm rebuild node-sass
 
   * install `bower-npm-resolver` and `global` (just use `npm install`)
 
@@ -11,10 +25,6 @@ I. Compilation
       ]
     }
 
-  * in `bower_components/videojs-playlist/bower.json` change `"main": "src/js/index.js"`,
-
-  * in `bower_components/videojs5-hlsjs-p2p-source-handler/bower.json` change `"main": "./lib/main.js"`,
-
   * be careful to not compile hls.js second time with babel - use:
 
   { test: /\.js$/,
@@ -22,8 +32,14 @@ I. Compilation
     ..
   }
 
+II. Hacking
 
-II. Issues
+1. Flash
+
+To hack/fix flash player issue we want to make `FCSubscribe` call optional. It would be also cool if we could hide progress bar. Anyway to compile videojs-swf project run: grunt dist. To test it in browser change flash config in `src/Videojs.purs`.
+
+
+III. Issues
 
   * it is REALLY IMPORTANT to only import and use appropriate version of videojs hlsjs source handler in your purescript code. If you use both versions in code they will be used in bundle...
 
@@ -35,7 +51,7 @@ II. Issues
 
 
 
-III. Installation as dependency
+IV. Installation as dependency
 
   I was able to use purescript-videojs with minimal overhead:
 

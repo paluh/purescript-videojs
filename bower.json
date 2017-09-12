@@ -10,7 +10,7 @@
     "purescript-nonempty": "^4.0.0",
     "purescript-pux": "^11.0.0",
     "hls.js": "^0.7.4",
-    "video.js": "^5.17",
+    "video.js": "^5.20.3",
     "videojs-playlist": "^3.0.0",
     "videojs-watermark": "https://github.com/paluh/videojs-watermark.git#master",
     "videojs-quality-picker": "https://github.com/paluh/videojs-quality-picker.git#master",

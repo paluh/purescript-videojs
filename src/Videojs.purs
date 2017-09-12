@@ -195,7 +195,8 @@ toNativeOptions ∷ ∀ e. (OptionsBase e) → NativeOptions
 toNativeOptions options =
   { autoplay: options.autoPlay
   , controls: options.controlBarVisibility
-  , flash: {swf: "//vjs.zencdn.net/swf/5.2.0/video-js.swf"}
+  -- , flash: {swf: "./video-js-swf/dist/video-js.swf"}
+  , flash: { swf: "//vjs.zencdn.net/swf/5.2.0/video-js.swf" }
   , fluid: true
   , preload: preloadToNative options.preload
   , techOrder: fromFoldable <<< map techToNative $ options.techOrder
