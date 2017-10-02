@@ -87,7 +87,6 @@ techToNative Html5 = "html5"
 type OptionsBase extra =
   Record
     ( autoPlay ∷ Boolean
-    , parentId ∷ ParentId
     , controlBarVisibility ∷ Boolean
     -- , aspectRatio ∷ AspectRatio
     , debug ∷ Boolean
@@ -165,8 +164,8 @@ createVideoElement document playerId = do
 
 videojsBase ∷
   ∀ eff e.
-    (String → OptionsBase e → Eff (dom ∷ DOM, videojs ∷ VIDEOJS | eff) (Either String Videojs)) →
-    OptionsBase e →
+    (String → OptionsBase (parentId ∷ ParentId | e) → Eff (dom ∷ DOM, videojs ∷ VIDEOJS | eff) (Either String Videojs)) →
+    OptionsBase (parentId ∷ ParentId | e) →
     Eff (dom ∷ DOM, videojs ∷ VIDEOJS | eff) (Either String Videojs)
 videojsBase vjs options = do
   document <- window >>= ((htmlDocumentToDocument <$> _) <<< Window.document)
@@ -188,7 +187,7 @@ videojsBase vjs options = do
           pure result
         err -> pure result
 
-videojs :: ∀ e eff. OptionsBase e → Eff ( dom ∷ DOM , videojs ∷ VIDEOJS | eff ) (Either String Videojs)
+videojs :: ∀ e eff. OptionsBase (parentId ∷ ParentId | e) → Eff ( dom ∷ DOM , videojs ∷ VIDEOJS | eff ) (Either String Videojs)
 videojs = videojsBase $ \e o → (runFn4 videojsImpl Left Right e (toNativeOptions o))
 
 toNativeOptions ∷ ∀ e. (OptionsBase e) → NativeOptions

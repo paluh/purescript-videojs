@@ -17,14 +17,16 @@ run elementId = do
   result <-
     videojs
       { autoPlay: true
-      , controlBarVisibility: false
+      , controlBarVisibility: true
       , debug: true
       , parentId: ElementId elementId
       , playlist:
           singleton
             { sources:
-              { hls: Just "http://stream5.nadaje.com:12146/live/stream-1.stream/playlist.m3u8"
-              , rtmp: Just "http://stream5.nadaje.com:12146/live/stream-1.stream/playlist.m3u8?secure-endtime=1505320281&secure-hash=pb9_qUHe95llPzqL8RPHVkjaYmI5ZRnU6TBKQdgRaFk=" --"rtmp://stream5.nadaje.com:12146/live/stream-1.stream"
+              { hls: Just "https://nadaje.delivery.streamroot.io/nadaje4/live/ngrp:stream-1_all/chunklist_b520071.m3u8?e=1507044002&st=9g8oiIBWfMXcPpHRiN7nTg"
+                -- hls: Just "http://stream5.nadaje.com:12146/live/stream-1.stream/playlist.m3u8kurwa"
+              , rtmp: Nothing
+              -- , rtmp: Just "http://stream5.nadaje.com:12146/live/stream-1.stream/playlist.m3u8?secure-endtime=1505320281&secure-hash=pb9_qUHe95llPzqL8RPHVkjaYmI5ZRnU6TBKQdgRaFk=" --"rtmp://stream5.nadaje.com:12146/live/stream-1.stream"
               -- , rtmp: Just "rtmp://stream4-clone.nadaje.com:8000/live/TZQ1.stream?secure-endtime=1489851043&secure-hash=2brsbcMbBOvhWyq8wmD2pUpySlFbAGwMZUNyseE1tdQ="
               -- , rtmp: Just "rtmp://stream4-clone.nadaje.com:8000/live/TZQ1.stream?secure-hash=Nytl15fQ4vzozz48mOY4I09sAsH6AJyVJIqe0USi5Rk="
 
@@ -34,7 +36,7 @@ run elementId = do
             , poster: Just "./static/pimp.JPG"
             }
       , preload: Metadata
-      , techOrder: Html5 :| [Flash]
+      , techOrder: Flash :| [Html5] -- Html5 :| [Flash]
       , watermark:
         Just
           { url: "./static/khan.png"

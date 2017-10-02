@@ -28,7 +28,7 @@ I. Compilation
   * be careful to not compile hls.js second time with babel - use:
 
   { test: /\.js$/,
-    exclude: [/hls.js/, /streamroot-hlsjs-p2p-bundle/],
+    exclude: [/hls.js/, /p2p/],
     ..
   }
 

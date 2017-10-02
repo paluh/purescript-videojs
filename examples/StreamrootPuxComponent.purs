@@ -2,7 +2,6 @@ module StreamrootPuxComponent where
 
 import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Exception (EXCEPTION)
-import DOM.Node.Types (ElementId(..))
 import Data.Array (singleton)
 import Data.Maybe (Maybe(..))
 import Data.NonEmpty ((:|))
@@ -21,7 +20,7 @@ playlist :: Playlist
 playlist =
     singleton
       { sources:
-        { hls: Just "http://stream5.nadaje.com:12146/live/stream-1.stream/playlist.m3u8"
+        { hls: Just "https://nadaje.delivery.streamroot.io/nadaje4/live/ngrp:stream-1_all/playlist.m3u8?st=_w_5xg7l79dLnR3aWDbERQ&e=1507047442"
         , rtmp: Just "rtmp://stream5.nadaje.com:12146/live/stream-1.stream?secure-endtime=1489851043&secure-hash=2brsbcMbBOvhWyq8wmD2pUpySlFbAGwMZUNyseE1tdQ="
 
         , mpegDash: (Nothing ∷ Maybe String)
@@ -29,13 +28,12 @@ playlist =
       , poster: Just "./static/pimp.JPG"
       }
 
-options ∷ Options
+options ∷ Options ()
 options =
   { autoPlay: true
   , controlBarVisibility: true
-  , debug: true
+  , debug: false
   , mobileBrowserEnabled: true
-  , parentId: ElementId "unused"
   , playlist: playlist
   , preload: Metadata
   , techOrder: Html5 :| [Flash]

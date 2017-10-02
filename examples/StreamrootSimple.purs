@@ -24,8 +24,8 @@ run elementId = do
       , playlist:
           singleton
             { sources:
-              { hls: Just "https://nadaje.delivery.streamroot.io/nadaje2/live/ngrp:stream-1_all/playlist.m3u8?st=COEDJkDofcbf8qqpT_gLUQ&e=1505390052" --"http://stream5.nadaje.com:12146/live/stream-1.stream/playlist.m3u8"
-              , rtmp: Just "rtmp://stream5.nadaje.com:12146/live/stream-1.stream"
+              { hls: Just "https://nadaje.delivery.streamroot.io/nadaje4/live/ngrp:stream-1_all/playlist.m3u8?st=_w_5xg7l79dLnR3aWDbERQ&e=1507047442"
+              , rtmp: Nothing -- Just "rtmp://stream5.nadaje.com:12146/live/stream-1.stream"
               -- , rtmp: Just "rtmp://stream4-clone.nadaje.com:8000/live/TZQ1.stream?secure-endtime=1489851043&secure-hash=2brsbcMbBOvhWyq8wmD2pUpySlFbAGwMZUNyseE1tdQ="
               -- , rtmp: Just "rtmp://stream4-clone.nadaje.com:8000/live/TZQ1.stream?secure-hash=Nytl15fQ4vzozz48mOY4I09sAsH6AJyVJIqe0USi5Rk="
 

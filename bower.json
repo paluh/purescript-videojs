@@ -16,8 +16,8 @@
     "videojs-quality-picker": "https://github.com/paluh/videojs-quality-picker.git#master",
     "videojs5-hlsjs-source-handler": "https://github.com/paluh/videojs5-hlsjs-source-handler.git#master",
 
-    "videojs5-hlsjs-p2p-source-handler": "npm:streamroot-videojs5-hlsjs-p2p-source-handler#0.3.44",
-    "streamroot-hlsjs-p2p-bundle": "npm:streamroot-hlsjs-p2p-bundle#4.3.43"
+    "videojs5-hlsjs-p2p-source-handler": "npm:streamroot-videojs5-hlsjs-p2p-source-handler#0.3.48",
+    "streamroot-hlsjs-p2p-bundle": "npm:streamroot-hlsjs-p2p-bundle#4.3.47"
   },
   "devDependencies": {
     "purescript-debug": "^3.0.0",

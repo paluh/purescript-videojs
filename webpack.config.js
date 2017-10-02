@@ -72,7 +72,7 @@ module.exports = function(env) {
 
   var r = {
     entry: entries,
-      devtool: env.devel?'eval':'cheap-module-source-map',
+      devtool: '', //env.devel?'eval':'cheap-module-source-map',
       cache: true,
       devServer:
         { contentBase: '.',
@@ -105,7 +105,7 @@ module.exports = function(env) {
             }, {
               test: /\.js$/,
               loader: 'babel-loader',
-              exclude: [/hls.js/, /streamroot-hlsjs-p2p-bundle/],
+              exclude: [/hls.js/, /p2p/],
               query: { cacheDirectory: true }
             }, {
               test: /\.swf$/,

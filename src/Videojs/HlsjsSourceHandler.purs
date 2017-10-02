@@ -6,14 +6,14 @@ import Control.Monad.Eff.Exception (EXCEPTION)
 import DOM (DOM)
 import Data.Either (Either(..))
 import Data.Function.Uncurried (Fn2, Fn4, runFn4)
+import Videojs (VIDEOJS, Videojs, ParentId)
 import Videojs.Util (merge)
-import Videojs (VIDEOJS, Videojs)
 
 foreign import data HLSJS ∷ Effect
 
 type HlsjsConfig = { debug ∷ Boolean }
 type Html5 = { hlsjsConfig ∷ HlsjsConfig }
-type Options = Videojs.OptionsBase ()
+type Options e = Videojs.OptionsBase e
 type NativeOptions = Videojs.NativeOptionsBase (html5 ∷ Html5)
 
 foreign import videojsImpl ∷
@@ -27,10 +27,10 @@ foreign import videojsImpl' ∷
       NativeOptions
       (Eff (exception ∷ EXCEPTION, videojs ∷ VIDEOJS, dom ∷ DOM | eff) Videojs)
 
-videojs :: ∀ eff. Options → Eff ( dom ∷ DOM , videojs ∷ VIDEOJS | eff ) (Either String Videojs)
+videojs :: ∀ eff. Options (parentId ∷ ParentId) → Eff ( dom ∷ DOM , videojs ∷ VIDEOJS | eff ) (Either String Videojs)
 videojs = Videojs.videojsBase (\e o → runFn4 videojsImpl Left Right e (toNativeOptions o))
 
-toNativeOptions ∷ Options → NativeOptions
+toNativeOptions ∷ ∀ e. Options e → NativeOptions
 toNativeOptions options =
   merge o { html5: { hlsjsConfig: { debug: options.debug }}}
  where

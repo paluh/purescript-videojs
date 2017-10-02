@@ -2,7 +2,6 @@ module PuxComponent where
 
 import Control.Monad.Eff (Eff)
 import Control.Monad.Eff.Exception (EXCEPTION)
-import DOM.Node.Types (ElementId(..))
 import Data.Array (singleton)
 import Data.Maybe (Maybe(..))
 import Data.NonEmpty ((:|))
@@ -28,12 +27,11 @@ playlist =
       , poster: Just "./static/pimp.JPG"
       }
 
-options ∷ Options
+options ∷ Options ()
 options =
   { autoPlay: false
   , controlBarVisibility: true
   , debug: true
-  , parentId: ElementId "unused"
   , playlist: playlist
   , preload: Metadata
   , techOrder: Flash :| [Html5]
