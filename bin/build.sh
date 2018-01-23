@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 babel ./src/Videojs/PuxComponent.jsx > src/VideojsPuxComponent.js
 if [ "$1" == "DEV" ]; then

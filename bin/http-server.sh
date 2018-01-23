@@ -1,6 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
 PORT=38990
-DOMAIN=videojs.localdomain
+DOMAIN=127.0.0.1 # videojs.localdomain
 echo "\nserving index page on: $DOMAIN:$PORT\n\n"
 python -m http.server --bind $DOMAIN $PORT
 #echo "Visit: localhost:"$PORT"/index.html to test webpage"

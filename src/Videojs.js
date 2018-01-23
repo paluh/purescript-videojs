@@ -3,7 +3,7 @@
 
 // module Videojs
 
-require('video.js');
+var videojs = require('video.js');
 require('videojs-playlist');
 require('videojs-watermark');
 require('videojs-quality-picker');
