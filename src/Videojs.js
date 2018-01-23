@@ -14,13 +14,19 @@ videojs.getComponent('Flash').prototype.play = function(){
   this.el_.vjs_play();
 };
 
+videojs.getComponent('Flash').prototype.currentTime = function() {
+  return 1;
+};
+
+videojs.getComponent('Flash').prototype.bufferedPercent = function() {
+  return 1;
+};
+
 videojs.getComponent('Flash').streamToParts = function(src) {
   var parts = {
     connection: '',
     stream: ''
   }, rtmpParts;
-  console.log("stream to parts");
-  console.log(src);
   if (!src) { return parts; }
   rtmpParts = /(rtmp.*live\/)(.*)/.exec(src);
   if(rtmpParts) {
@@ -28,7 +34,7 @@ videojs.getComponent('Flash').streamToParts = function(src) {
     parts.stream = rtmpParts[2];
   } else {
     throw "Videojs.streamToParts: url doesn't match hardcoded pattern rtmp://.*/live/";
-  };
+  }
   return parts;
 };
 
