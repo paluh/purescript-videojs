@@ -1,5 +1,15 @@
 I. Compilation
 
+  * in your webpack.config.js when configuring babel you have to throw this shit (mostly related to pux files - be more precise if you like):
+
+        loader: 'babel-loader',
+              // !!!FUUUUUUUUUUUUUUUUUUUUUUUUCK!!!
+              // there is some strange build bug
+              // in babel which fucks up when
+              // encounters "x.match"!!!!!!!!
+              exclude: [/hls.js/, /p2p/,
+                        /Pux.js/, /React.js/, /Events.js/, /HTML.js/],
+
   * there is something wrong with "pux/.babelrc" which causes problems with module-loader - investigate further
 
   * in `bower_components/videojs-playlist/bower.json` change `"main": "src/js/index.js"`,
@@ -8,7 +18,7 @@ I. Compilation
 
     from "main": "./dist/videojs5-hlsjs-p2p-source-handler.js"
 
-    to "main": "./videojs5-hlsjs-p2p-source-handler.js",
+    to "main": "./lib/main",
 
 
   * If you get sass related error (not for linux platform etc.) run:

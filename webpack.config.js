@@ -105,7 +105,12 @@ module.exports = function(env) {
             }, {
               test: /\.js$/,
               loader: 'babel-loader',
-              exclude: [/hls.js/, /p2p/],
+              // !!!FUUUUUUUUUUUUUUUUUUUUUUUUCK!!!
+              // there is some strange build bug
+              // in babel which fucks up when
+              // encounters "x.match"!!!!!!!!
+              exclude: [/hls.js/, /p2p/,
+                        /Pux.js/, /React.js/, /Events.js/, /HTML.js/],
               query: { cacheDirectory: true }
             }, {
               test: /\.swf$/,

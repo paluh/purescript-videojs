@@ -8,7 +8,7 @@
     "purescript-generics-rep": "^5.0.0",
     "purescript-newtype": "^2.0.0",
     "purescript-nonempty": "^4.0.0",
-    "purescript-pux": "^11.0.0",
+    "purescript-pux": "11.0.0",
     "hls.js": "^0.7.4",
     "video.js": "^5.20.3",
     "videojs-playlist": "3.0.0",
