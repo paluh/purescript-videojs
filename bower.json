@@ -8,16 +8,15 @@
     "purescript-generics-rep": "^5.0.0",
     "purescript-newtype": "^2.0.0",
     "purescript-nonempty": "^4.0.0",
-    "purescript-pux": "11.0.0",
-    "hls.js": "^0.7.4",
+    "purescript-pux": "12.0.0",
     "video.js": "^5.20.3",
     "videojs-playlist": "3.0.0",
     "videojs-watermark": "https://github.com/paluh/videojs-watermark.git#master",
     "videojs-quality-picker": "https://github.com/paluh/videojs-quality-picker.git#master",
     "videojs5-hlsjs-source-handler": "https://github.com/paluh/videojs5-hlsjs-source-handler.git#master",
-
-    "videojs5-hlsjs-p2p-source-handler": "npm:streamroot-videojs5-hlsjs-p2p-source-handler#0.3.48",
-    "streamroot-hlsjs-p2p-bundle": "npm:streamroot-hlsjs-p2p-bundle#4.3.47"
+    "videojs5-hlsjs-p2p-source-handler": "npm:streamroot-videojs5-hlsjs-p2p-source-handler#0.3.63",
+    "streamroot-hlsjs-p2p-bundle": "npm:streamroot-hlsjs-p2p-bundle#4.3.63",
+    "hls.js": "0.8.2"
   },
   "devDependencies": {
     "purescript-debug": "^3.0.0",
