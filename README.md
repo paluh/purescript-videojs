@@ -3,8 +3,7 @@ I. Compilation
   * in your webpack.config.js when configuring babel you have to throw this shit (mostly related to pux files - be more precise if you like):
 
         loader: 'babel-loader',
-              // !!!FUUUUUUUUUUUUUUUUUUUUUUUUCK!!!
-              // there is some strange build bug
+              // F*** - there is some strange build bug
               // in babel which fucks up when
               // encounters "x.match"!!!!!!!!
               exclude: [/hls.js/, /p2p/,

@@ -23,8 +23,7 @@ run elementId = do
       , playlist:
           singleton
             { sources:
-              { hls: Just "https://nadaje.delivery.streamroot.io/nadaje3/live/ngrp:stream-1_all/playlist.m3u8?st=BmuZtpGfaNP3MsdCQSI3zQ&e=1516808634"
-                -- hls: Just "http://stream5.nadaje.com:12146/live/stream-1.stream/playlist.m3u8kurwa"
+              { hls: Just "https://nadaje.delivery.streamroot.io/nadaje1/live/ngrp:stream-1_all/playlist.m3u8?st=dnWqMQ-efcXSZryk9zo2wA&e=1517391687"
               , rtmp: Nothing
               -- , rtmp: Just "http://stream5.nadaje.com:12146/live/stream-1.stream/playlist.m3u8?secure-endtime=1505320281&secure-hash=pb9_qUHe95llPzqL8RPHVkjaYmI5ZRnU6TBKQdgRaFk=" --"rtmp://stream5.nadaje.com:12146/live/stream-1.stream"
               -- , rtmp: Just "rtmp://stream4-clone.nadaje.com:8000/live/TZQ1.stream?secure-endtime=1489851043&secure-hash=2brsbcMbBOvhWyq8wmD2pUpySlFbAGwMZUNyseE1tdQ="
